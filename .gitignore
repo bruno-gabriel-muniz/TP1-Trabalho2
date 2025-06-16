@@ -1,3 +1,12 @@
+#CMake
+/Build/
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+/Build/Makefile
+/*.cmake
+
+
 # Prerequisites
 *.d
 
