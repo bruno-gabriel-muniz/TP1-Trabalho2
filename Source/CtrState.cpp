@@ -11,9 +11,14 @@ class CtrState{
         array<Carteira, 5> carteiras;
         PresentationInte *state, *request;
     public:
+        void setState(PresentationInte *request);
         void change();
         void run();
 };
+
+void CtrState::setState(PresentationInte *rqst){
+    state = rqst;
+}
 
 void CtrState::change(){
     try{

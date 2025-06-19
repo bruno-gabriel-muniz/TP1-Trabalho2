@@ -6,7 +6,9 @@
 
 using namespace std;
 
-class CtrState;
+class CtrState; // declaração antecipada
+
+// interfaces / invokers
 
 class AuthenticationServiceInte{
     private:
@@ -41,4 +43,5 @@ class InvestmentServiceInte{
         virtual void makeOrder(...) = 0;
         virtual void removeOrder(...) = 0;
         virtual void cancelOrder(...) = 0;
+        virtual ~InvestmentServiceInte() = default;
 };
