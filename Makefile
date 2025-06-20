@@ -3,7 +3,7 @@ BUILD_DIR = Build
 EXEC     = tp1
 TEST     = test_app
 
-.PHONY: build run test clean
+.PHONY: build test run clean
 
 build:
 	mkdir -p $(BUILD_DIR)
