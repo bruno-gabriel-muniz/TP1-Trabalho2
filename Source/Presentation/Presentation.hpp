@@ -4,6 +4,7 @@ using namespace std;
 
 class AuthenticationPre: public PresentationInte{
     public:
+        nullptr_t exit();
         PresentationInte* showMainMenu();
         AuthenticationPre(CtrState *ctx);
 };

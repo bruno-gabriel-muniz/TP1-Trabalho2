@@ -1,3 +1,7 @@
+#Doxygen
+/Docs/doxygen/html/
+/Docs/doxygen/latex/
+/Docs/doxygen/xml/
 /Docs/*.out
 
 #VsCode

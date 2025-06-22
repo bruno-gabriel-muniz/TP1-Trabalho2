@@ -17,3 +17,6 @@ test: build
 
 clean:
 	rm -rf $(BUILD_DIR)
+
+docs:
+	doxygen Doxyfile
