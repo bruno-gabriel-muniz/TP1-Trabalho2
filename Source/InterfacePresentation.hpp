@@ -1,24 +1,32 @@
+/**
+ * @file InterfacePresentation.hpp
+ * @brief Interface de comunicação das UIs utilizada por @ref CtrState "CtrState".
+ */
+
 #include <memory>
 
 class CtrState;
 
 /**
  * @class PresentationInte
- * @brief Interface base da UI para os estados usados por @ref CtrState "CtrState".
+ * @brief Interface base das UIs para os estados utilizados por @ref CtrState "CtrState".
  */
-class PresentationInte{
-    private:
-        CtrState *context;
-    public:
-        /**
-         * @brief Roda a interface.
-         * @return Retorna a próxima interface.
-         */
-        virtual PresentationInte* run() = 0;
-        /**
-         * @brief Faz a validação e troca as interfaces no controle de estado.
-         * @param request Novo estado da interface.
-         */
-        virtual void change(PresentationInte *request) = 0;
-        virtual ~PresentationInte() = default;
+class PresentationInte {
+private:
+    CtrState *context;
+
+public:
+    /**
+     * @brief Executa a interface.
+     * @return Retorna a próxima interface a ser executada.
+     */
+    virtual PresentationInte* run() = 0;
+
+    /**
+     * @brief Realiza a validação e executa a transição de estado no controle da interface.
+     * @param request Novo estado da interface.
+     */
+    virtual void change(PresentationInte *request) = 0;
+
+    virtual ~PresentationInte() = default;
 };

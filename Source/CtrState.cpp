@@ -1,3 +1,8 @@
+/**
+ * @file CtrState.cpp
+ * @brief Arquivo que define a classe CtrState, responsável pelo controle de estado da UI.
+ */
+
 #include <iostream>
 
 #include "InterfacePresentation.hpp"
@@ -7,31 +12,31 @@ using namespace std;
 
 /**
  * @class CtrState
- * @brief Gerencia o usuário, carteiras e o estado da interface.
-*/
-class CtrState{
-    private:
-        Conta user;
-        array<Carteira, 5> carteiras;
-        PresentationInte *state, *request;
-    public:
-        /**
-         * @brief Altera internamente estado da UI.
-         * @param request Instacia do novo estado da UI.
-         * @return void
-         */
-        void setState(PresentationInte *request);
-        /**
-         * @brief Usa o estado da UI para validar a alteração.
-         * @throws std::runtime_error Caso ocorra falha na operação.
-         * @return void
-         */
-        void change();
-        /**
-         * @brief Roda as trocas de estado e chama os outros métodos.
-         * @return void
-         */
-        void run();
+ * @brief Gerencia o usuário, as carteiras e o estado da interface por meio da interface @ref PresentationInte "PresentationInte".
+ */
+class CtrState {
+private:
+    Conta user;
+    array<Carteira, 5> carteiras;
+    PresentationInte *state, *request;
+
+public:
+    /**
+     * @brief Altera internamente o estado da UI.
+     * @param request Instância do novo estado da UI.
+     */
+    void setState(PresentationInte *request);
+
+    /**
+     * @brief Utiliza o estado atual da UI para validar a transição de estado.
+     * @throws std::runtime_error Caso ocorra falha na operação.
+     */
+    void change();
+
+    /**
+     * @brief Executa as trocas de estado e chama os métodos correspondentes.
+     */
+    void run();
 };
 
 void CtrState::setState(PresentationInte *rqst){

@@ -1,30 +1,85 @@
+/**
+ * @file Presentation.hpp
+ * @brief Define as classe que implementam a interface @ref PresentationInte "PresentationInte".
+ */
+
 #include "InterfacePresentation.hpp"
+#include "InterfacesService.hpp"
 
 using namespace std;
 
+/**
+ * @class AuthenticationPre
+ * @brief Gerencia a UI de Autenticação/Login e usa a interface @ref AuthenticationServiceInte "AuthenticationServiceInte" para validações internas.
+ */
 class AuthenticationPre: public PresentationInte{
     public:
-        nullptr_t exit();
+        /**
+         * @brief Define a saída do app.
+         * @return nullptr.
+         */
+        PresentationInte* exit();
+        /**
+         * @brief Exibe o menu de login com validação via serviço.
+         * @return Próxima UI.
+         */
         PresentationInte* showMainMenu();
         AuthenticationPre(CtrState *ctx);
 };
 
+/**
+ * @class AccountPre
+ * @brief Gerencia a UI do gerenciamento da conta e usa a interface @ref AccountServiceInte "AccountServiceInte" para validações internas.
+ */
 class AccountPre: public PresentationInte{
     public:
+        /**
+         * @brief Define a saída do app.
+         */
         nullptr_t exit();
+        /**
+         * @brief Exibe o menu de edição da conta com validação via serviço.
+         * @return Próxima UI.
+         */
         PresentationInte* showEditAccount();
+        /**
+         * @brief Exibe as carteiras dando a opção de entrar nelas com validação via serviço.
+         * @return Próxima UI.
+         */
         PresentationInte* showWallets();
         AccountPre(CtrState *ctx);
 };
 
+/**
+ * @class PersAccountPre
+ * @brief Representa uma UI estática para contas, indicando que a instância de @ref AccountPre "AccountPre" não deve ser substituída.
+ */
 class PersAccountPre: public PresentationInte{
     //Classe que indica que a AccountPre não precisa ser alterada.
 };
 
+/**
+ * @class InvestmentPre
+ * @brief Gerencia a parte de investimentos e usa a interface @ref InvestmentServiceInte "InvestmentServiceInte" para validações internas.
+ */
 class InvestmentPre: public PresentationInte{
     public:
-        PresentationInte* back();
-        void showEditPortfolio();
+        /**
+         * @brief Define a volta para a UI anterior.
+         * @return UI anterior.
+         */
+        PresentationInte* backInterface();
+        /**
+         * @brief Exibe o menu de edição da carteircom validação via serviço.
+         */
+        void showEditCarteira();
+        /**
+         * @brief Exibe o menu de gerenciamento das ordencom validação via serviço.
+         */
         void showManageOrders();
+        /**
+         * @brief Exibe a opção de acessar o menu de @ref showManageOrders "ManageOrders" e showEditCarteira "EditCarteira".
+         */
+        void showMain();
         InvestmentPre(CtrState *ctx);
 };
