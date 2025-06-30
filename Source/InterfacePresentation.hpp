@@ -3,6 +3,8 @@
  * @brief Interface de comunicação das UIs utilizada por @ref CtrState "CtrState".
  */
 
+#pragma once
+
 #include <memory>
 
 class CtrState;
@@ -12,7 +14,7 @@ class CtrState;
  * @brief Interface base das UIs para os estados utilizados por @ref CtrState "CtrState".
  */
 class PresentationInte {
-private:
+protected:
     CtrState *context;
 
 public:

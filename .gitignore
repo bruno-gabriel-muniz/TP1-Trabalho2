@@ -52,6 +52,8 @@ TP1-Trabalho2.layout
 *.lib
 
 # Executables
+test
+main
 *.exe
 *.out
 *.app

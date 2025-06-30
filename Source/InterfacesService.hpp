@@ -3,6 +3,8 @@
  * @brief Interfaces da camada de serviço do aplicativo, utilizadas pelo módulo de apresentação: @ref Presentation.hpp "Presentation".
  */
 
+#pragma once
+
 #include <array>
 #include <memory>
 

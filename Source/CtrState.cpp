@@ -3,6 +3,8 @@
  * @brief Arquivo que define a classe CtrState, responsável pelo controle de estado da UI.
  */
 
+#pragma once
+
 #include <iostream>
 
 #include "InterfacePresentation.hpp"
@@ -18,9 +20,10 @@ class CtrState {
 private:
     Conta user;
     array<Carteira, 5> carteiras;
-    PresentationInte *state, *request;
+    PresentationInte *state = nullptr, *request;
 
 public:
+    CtrState() {};
     /**
      * @brief Altera internamente o estado da UI.
      * @param request Instância do novo estado da UI.
