@@ -1,3 +1,7 @@
+#Db
+*.sqbpro
+*.sqlite
+
 #CodeBlocks
 TP1-Trabalho2.cbp
 TP1-Trabalho2.layout

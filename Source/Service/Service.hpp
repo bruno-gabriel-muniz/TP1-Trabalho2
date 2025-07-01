@@ -3,7 +3,11 @@
  * @brief Define as classes que implementam as interfaces de serviço: @ref InterfacesService.hpp "InterfacesService"
  */
 
-#include "InterfacesService.hpp"
+#pragma once
+
+#include "Source/InterfacesService.hpp"
+#include "Source/Presentation/Presentation.hpp"
+#include "Source/DB.cpp"
 
 // Command
 
@@ -74,7 +78,11 @@ private:
     AuthentCommandMakeAccount cmdMakeAccount;
 
 public:
-    AuthenticationSer(CtrState *ctx);
+    AuthenticationSer(CtrState *ctx) : cmdLogin(ctx), cmdMakeAccount(ctx) {
+        context = ctx;
+    };
+    PresentationInte* login(Ncpf cpf, Senha senha);
+    PresentationInte* makeAccount(Ncpf cpf, Senha senha, Nome nome);
 };
 
 //---------
@@ -151,7 +159,7 @@ public:
     /**
      * @brief Executa o comando de listagem das carteiras.
      */
-    array<Carteira, 5> execute();
+    vector<Carteira> execute();
 };
 
 /**
@@ -216,6 +224,15 @@ private:
 
 public:
     AccountSer(CtrState *ctx);
+
+    PresentationInte* manageWallet(Nome nome);
+    void removeWallet(Nome nome);
+    void makeWallet(Nome nome, TipoPerfil perfil);
+    vector<Carteira> listWallets();
+    void changeSenha(Senha senha);
+    void changeName(Nome nome);
+    PresentationInte* removeAccount();
+    PresentationInte* logOut();
 };
 
 //---------------
@@ -309,4 +326,10 @@ private:
 
 public:
     InvestmentSer(CtrState *ctx);
+
+    void cancelOrder(CodigoNeg codNeg);
+    void removeOrder(CodigoNeg codNeg);
+    void makeOrder(CodigoNeg codNeg, Quantidade quantidade, Data data);
+    vector<Ordem> listOrders();
+    void editWallet(Nome* nome = nullptr, TipoPerfil* perfil = nullptr);
 };

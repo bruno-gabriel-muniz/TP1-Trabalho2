@@ -24,9 +24,7 @@
  * @see dominios.hpp
  */
 //---------------------------------------------------------------------
-#ifndef ENTIDADES_HPP_INCLUDED
-#define ENTIDADES_HPP_INCLUDED
-
+#pragma once
 //---------------------------------------------------------------------
 #include "dominios.hpp"
 
@@ -550,5 +548,3 @@ inline Quantidade Ordem::getQuantidade()
 }
 
 ///---------------------------------------------------------------------
-
-#endif // ENTIDADES_HPP_INCLUDED

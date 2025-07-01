@@ -23,8 +23,7 @@
  * @see entidades.hpp
  */
 //---------------------------------------------------------------------
-#ifndef DOMINIOS_HPP_INCLUDED
-#define DOMINIOS_HPP_INCLUDED
+#pragma once
 
 //---------------------------------------------------------------------
 #include <iomanip>
@@ -33,6 +32,7 @@
 #include <set>
 #include <stdexcept>
 #include <string>
+
 
 using namespace std;
 
@@ -806,4 +806,3 @@ inline string Senha::getValor() const
 
 ///---------------------------------------------------------------------
 
-#endif // DOMINIOS_HPP_INCLUDED

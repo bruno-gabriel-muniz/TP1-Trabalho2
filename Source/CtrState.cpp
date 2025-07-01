@@ -7,8 +7,8 @@
 
 #include <iostream>
 
-#include "InterfacePresentation.hpp"
-#include "Libs/entidades.hpp"
+#include "Source/InterfacePresentation.hpp"
+#include "Source/Libs/entidades.hpp"
 
 using namespace std;
 
@@ -18,12 +18,19 @@ using namespace std;
  */
 class CtrState {
 private:
-    Conta user;
-    array<Carteira, 5> carteiras;
+    Conta *user;
+    vector<Carteira> *carteiras;
     PresentationInte *state = nullptr, *request;
 
 public:
     CtrState() {};
+
+    void setUser(Conta *usr) {user = usr;}
+    void setCarteiras(vector<Carteira> *carts) {carteiras = carts;}
+
+    Conta* getUser() {return user;}
+    vector<Carteira>* getCarteiras() {return carteiras;}
+
     /**
      * @brief Altera internamente o estado da UI.
      * @param request Instância do novo estado da UI.

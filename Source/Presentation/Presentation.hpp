@@ -3,8 +3,11 @@
  * @brief Define as classe que implementam a interface @ref PresentationInte "PresentationInte".
  */
 
-#include "InterfacePresentation.hpp"
-#include "InterfacesService.hpp"
+#pragma once
+
+#include "Source/InterfacePresentation.hpp"
+#include "Source/InterfacesService.hpp"
+#include "Source/CtrState.cpp"
 
 using namespace std;
 
@@ -14,6 +17,9 @@ using namespace std;
  */
 class AuthenticationPre: public PresentationInte{
     public:
+        
+        AuthenticationPre(CtrState *ctx){context = ctx;};
+    
         /**
          * @brief Define a saída do app.
          * @return nullptr.
@@ -24,7 +30,8 @@ class AuthenticationPre: public PresentationInte{
          * @return Próxima UI.
          */
         PresentationInte* showMainMenu();
-        AuthenticationPre(CtrState *ctx);
+        PresentationInte* run() {return this;};
+        void change(PresentationInte *request) {};
 };
 
 /**
@@ -33,6 +40,9 @@ class AuthenticationPre: public PresentationInte{
  */
 class AccountPre: public PresentationInte{
     public:
+
+        AccountPre(CtrState *ctx){context = ctx;};
+
         /**
          * @brief Define a saída do app.
          */
@@ -47,7 +57,8 @@ class AccountPre: public PresentationInte{
          * @return Próxima UI.
          */
         PresentationInte* showWallets();
-        AccountPre(CtrState *ctx);
+        PresentationInte* run() {return this;};
+        void change(PresentationInte *request) {};
 };
 
 /**
@@ -56,6 +67,12 @@ class AccountPre: public PresentationInte{
  */
 class PersAccountPre: public PresentationInte{
     //Classe que indica que a AccountPre não precisa ser alterada.
+    public:
+
+        PersAccountPre(CtrState *ctx){context = ctx;};
+
+        PresentationInte* run() {return this;};
+        void change(PresentationInte *request) {};
 };
 
 /**
@@ -64,6 +81,9 @@ class PersAccountPre: public PresentationInte{
  */
 class InvestmentPre: public PresentationInte{
     public:
+
+        InvestmentPre(CtrState *ctx){context = ctx;};
+
         /**
          * @brief Define a volta para a UI anterior.
          * @return UI anterior.
@@ -81,5 +101,6 @@ class InvestmentPre: public PresentationInte{
          * @brief Exibe a opção de acessar o menu de @ref showManageOrders "ManageOrders" e showEditCarteira "EditCarteira".
          */
         void showMain();
-        InvestmentPre(CtrState *ctx);
+        PresentationInte* run() {return this;};
+        void change(PresentationInte *request) {};
 };

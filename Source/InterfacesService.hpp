@@ -8,8 +8,8 @@
 #include <array>
 #include <memory>
 
-#include "InterfacePresentation.hpp"
-#include "Libs/entidades.hpp"
+#include "Source/CtrState.cpp"
+#include "Source/Libs/entidades.hpp"
 
 using namespace std;
 
@@ -93,7 +93,7 @@ public:
      * @throws std::runtime_error Caso ocorra falha na operação.
      * @return Lista das carteiras da conta.
      */
-    virtual array<Carteira, 5> listWallets() = 0;
+    virtual vector<Carteira> listWallets() = 0;
 
     /**
      * @brief Cria uma nova carteira para a conta ativa.
