@@ -19,17 +19,17 @@ using namespace std;
 class CtrState {
 private:
     Conta *user;
-    vector<Carteira> *carteiras;
+    Carteira *carteira;
     PresentationInte *state = nullptr, *request;
 
 public:
     CtrState() {};
 
     void setUser(Conta *usr) {user = usr;}
-    void setCarteiras(vector<Carteira> *carts) {carteiras = carts;}
+    void setCarteira(Carteira *carts) {carteira = carts;}
 
     Conta* getUser() {return user;}
-    vector<Carteira>* getCarteiras() {return carteiras;}
+    Carteira* getCarteira() {return carteira;}
 
     /**
      * @brief Altera internamente o estado da UI.
