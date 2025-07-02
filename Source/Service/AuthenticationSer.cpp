@@ -9,12 +9,12 @@ PresentationInte* AuthentCommandMakeAccount::execute(Ncpf cpf, Senha senha, Nome
     char *errorMsg = nullptr;
 
     // Procura cpf no DB.
-    string find_cpf_s = "SELECT CPF FROM Contas WHERE CPF = " + cpf.getValor();
+    string find_cpf_s = "SELECT CPF FROM Contas WHERE CPF = \"" + cpf.getValor() + '"';
     const char *find_cpf = find_cpf_s.c_str();
 
     bool exc_result = sqlite3_exec(db->getDB(), find_cpf, callback, &result, &errorMsg);
     if(exc_result != SQLITE_OK){
-        cerr << "Erro ao validar a disponibilidade do CPF: " << errorMsg;
+        throw runtime_error("Erro ao validar a disponibilidade do CPF: " + string(errorMsg));
         sqlite3_free(errorMsg);
     }
 
@@ -26,13 +26,13 @@ PresentationInte* AuthentCommandMakeAccount::execute(Ncpf cpf, Senha senha, Nome
     result.clear();
 
     // Insere a conta no DB.
-    string insertNewAccount_s = "INSERT INTO Contas (CPF, SENHA, NOME) VALUES " +
-                             '(' + cpf.getValor() + ", " + senha.getValor() + ", " + nome.getValor() + ")";
+    string insertNewAccount_s = "INSERT INTO Contas (CPF, SENHA, NOME) VALUES (\""
+                             + cpf.getValor() + "\", \"" + senha.getValor() + "\", \"" + nome.getValor() + "\")";
     const char *insertNewAccount = insertNewAccount_s.c_str();
 
     exc_result = sqlite3_exec(db->getDB(), insertNewAccount, nullptr, 0, &errorMsg);
     if(exc_result != SQLITE_OK){
-        cerr << "Erro ao inserir a nova conta no DB: " << errorMsg;
+        throw runtime_error("Erro ao inserir a nova conta no DB: " + string(errorMsg));
         sqlite3_free(errorMsg);
     }
 
@@ -53,12 +53,12 @@ PresentationInte* AuthentCommandLogin::execute(Ncpf cpf, Senha senha){
     char *errorMsg = nullptr;
 
     // Procura cpf no DB.
-    string find_cpf_s = "SELECT CPF, SENHA, NOME FROM Contas WHERE CPF = " + cpf.getValor();
+    string find_cpf_s = "SELECT CPF, SENHA, NOME FROM Contas WHERE CPF = \"" + cpf.getValor() + "\"";
     const char *find_cpf = find_cpf_s.c_str();
 
     bool exc_result = sqlite3_exec(db->getDB(), find_cpf, callback, &result, &errorMsg);
     if(exc_result != SQLITE_OK){
-        cerr << "Erro ao validar a disponibilidade do CPF: " << errorMsg;
+        throw runtime_error("Erro ao validar a disponibilidade do CPF: " + string(errorMsg));
         sqlite3_free(errorMsg);
     }
 

@@ -26,6 +26,8 @@ class TestMakeAccount : public Test{
             } catch (runtime_error &x) {
                 out = x.what();
                 result = ResultFail();
+                delete contexto;
+                return;
             }
 
             // Verificando os dados;
@@ -41,6 +43,13 @@ class TestMakeAccount : public Test{
                 out = "void, but value error.";
                 result = ResultFail();
             };
+
+            // Limpando os Dados;
+            sqlite3_exec(
+                DB::getInstance()->getDB(),
+                "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
+                nullptr, nullptr, nullptr
+            );
             delete contexto;
         }
 };
