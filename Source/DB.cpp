@@ -87,7 +87,7 @@ public:
             "\"CODIGO\"	TEXT NOT NULL,"
             "\"PERFIL\"	TEXT NOT NULL,"
             "\"CPF\"	TEXT NOT NULL,"
-            "PRIMARY KEY(\"CODIGO\"),"
+            "PRIMARY KEY(\"CODIGO\" AUTOINCREMENT),"
             "FOREIGN KEY(\"CPF\") REFERENCES \"Contas\"(\"CPF\")"
         ")";
         result = sqlite3_exec(Db->getDB(), createCarteiras, nullptr, 0, &errorMsg);

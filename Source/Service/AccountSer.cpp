@@ -8,13 +8,13 @@ PresentationInte* AccountCommandManageWallet::execute(Nome nome){
     Ncpf cpf = contexto->getUser()->getNcpf();
 
     // Procura as carteiras no DB.
-    string find_cpf_s = "SELECT NOME CODIGO PERFIL CPF FROM Carteiras WHERE CPF = \"" + cpf.getValor() +
+    string findWalletS = "SELECT NOME CODIGO PERFIL CPF FROM Carteiras WHERE CPF = \"" + cpf.getValor() +
                         "\" AND NOME = \"" + nome.getValor() +"\"";
-    const char *find_cpf = find_cpf_s.c_str();
+    const char *findWallet = findWalletS.c_str();
 
-    bool exc_result = sqlite3_exec(db->getDB(), find_cpf, callback, &result, &errorMsg);
+    bool excResult = sqlite3_exec(db->getDB(), findWallet, callback, &result, &errorMsg);
     // Retorna erro caso o SQLite falhe.
-    if(exc_result != SQLITE_OK){
+    if(excResult != SQLITE_OK){
         sqlite3_free(errorMsg);
         throw runtime_error("Erro ao procurar a carteira: " + string(errorMsg));
     }
@@ -39,6 +39,45 @@ PresentationInte* AccountCommandManageWallet::execute(Nome nome){
     // Entra na cartiera
     return new InvestmentPre(contexto);
 }
+
+void AccountCommandMakeWallet::execute(Nome nome, TipoPerfil perfil){
+    // Inicia os dados do DB.
+    DB *db = DB::getInstance();
+    Tabela result;
+    char *errorMsg = nullptr;
+    Ncpf cpf = contexto->getUser()->getNcpf();
+
+    // Procura as carteiras no DB.
+    string findWalletS = "SELECT NOME CPF FROM Carteiras WHERE CPF = \"" + cpf.getValor();
+    const char *findWallet = findWalletS.c_str();
+
+    bool excResult = sqlite3_exec(db->getDB(), findWallet, callback, &result, &errorMsg);
+    // Retorna erro caso o SQLite falhe.
+    if(excResult != SQLITE_OK){
+        sqlite3_free(errorMsg);
+        throw runtime_error("Erro ao procurar a carteira: " + string(errorMsg));
+    }
+
+    // Retorna erro caso o limite de carteiras tenha sido atingido.
+    if(result.size() >= 5) throw runtime_error("Erro: limite de Carteiras atingido.");
+    for(Linha &linha : result){
+        if(linha["NOME"] == nome.getValor()) throw runtime_error("Erro: outra carteia já possui esse nome.");
+    }
+
+    //Atualiza os dados no DB;
+    string insertWalletS = "INERT INTO Carteiras (NOME PERFIL CPF) VALUES (\"" +
+                            nome.getValor() + "\", \"" + perfil.getValor() +
+                            "\", \"" + cpf.getValor() +
+                            "\")";
+    const char *insertWallet = insertWalletS.c_str();
+
+    bool excResult = sqlite3_exec(db->getDB(), insertWallet, callback, &result, &errorMsg);
+    // Retorna erro caso o SQLite falhe.
+    if(excResult != SQLITE_OK){
+        sqlite3_free(errorMsg);
+        throw runtime_error("Erro ao procurar a carteira: " + string(errorMsg));
+    }
+};
 
 PresentationInte* AccountSer::manageWallet(Nome nome) {
     return cmdManageWallet.execute(nome);
