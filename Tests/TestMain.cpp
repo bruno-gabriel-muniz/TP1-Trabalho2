@@ -4,4 +4,5 @@
 int main(){
     TestCtrStateRun().run();
     TestMakeAccount().run();
+    TestMakeLogin().run();
 }
