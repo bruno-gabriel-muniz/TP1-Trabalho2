@@ -223,7 +223,14 @@ private:
     AccountCommandManageWallet cmdManageWallet;
 
 public:
-    AccountSer(CtrState *ctx);
+    AccountSer(CtrState *ctx) :
+                cmdLogOut(ctx), cmdRemoveAccount(ctx),
+                cmdChangeName(ctx), cmdChangeSenha(ctx),
+                cmdListWallets(ctx), cmdMakeWallet(ctx),
+                cmdRemoveWallet(ctx), cmdManageWallet(ctx)
+    {
+        context = ctx;
+    };
 
     PresentationInte* manageWallet(Nome nome);
     void removeWallet(Nome nome);
