@@ -54,6 +54,67 @@ class TestMakeAccount : public Test{
         }
 };
 
+class TestMakeAccountF : public Test{
+    public:
+        void exec(){
+            // Definindo os dados do teste.
+            nameTest = "Teste->AuthentCommandMakeAccountF->execute";
+            typeTest = InvalidArgument();
+            in = "Cpf: 842.259.180-41 | Senha: B1g#ji | Nome: Ze de Fulano";
+            expected = "O CPF já está sendo utilizado.";
+
+            // Criando as variáveis do teste
+            CtrState *contexto = new CtrState();
+            AuthenticationSer ctrAuthen = AuthenticationSer(contexto);
+            Ncpf cpf;
+            Senha senha;
+            Nome nome;
+            cpf.setValor("842.259.180-41");
+            senha.setValor("B1g#ji");
+            nome.setValor("Ze de Fulano");
+
+            // Configurando DB.
+            string insertNewAccount_s = "INSERT INTO Contas (CPF, SENHA, NOME) VALUES (\"" +
+                                        cpf.getValor() + "\", \"" + senha.getValor() + "\", \"" +
+                                        nome.getValor() +
+                                        "\")";
+            const char *insertNewAccount = insertNewAccount_s.c_str();
+            bool exc_result = sqlite3_exec(DB::getInstance()->getDB(), insertNewAccount, nullptr, 0, nullptr);
+
+            // Rodando o teste
+            try{
+                ctrAuthen.makeAccount(cpf, senha, nome);
+            } catch (runtime_error &x) {
+                out = x.what();
+                if(out == expected)
+                    result = ResultPass();
+                else
+                    result = ResultFail();
+
+                // Limpando os dados
+                sqlite3_exec(
+                    DB::getInstance()->getDB(),
+                    "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
+                    nullptr, nullptr, nullptr
+                );
+                delete contexto;
+                return;
+            }
+
+            // Verificando os dados;
+            result = ResultFail();
+            out = "void";
+
+            // Limpando os Dados;
+            sqlite3_exec(
+                DB::getInstance()->getDB(),
+                "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
+                nullptr, nullptr, nullptr
+            );
+            delete contexto;
+        }
+};
+
 class TestMakeLogin : public Test{
     public:
         void exec(){
