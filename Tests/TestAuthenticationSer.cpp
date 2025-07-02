@@ -26,8 +26,14 @@ class TestMakeAccount : public Test{
             } catch (runtime_error &x) {
                 out = x.what();
                 result = ResultFail();
+                
+                // Limpando os Dados;
+                sqlite3_exec(
+                    DB::getInstance()->getDB(),
+                    "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
+                    nullptr, nullptr, nullptr
+                );
                 delete contexto;
-                return;
             }
 
             // Verificando os dados;
@@ -86,10 +92,8 @@ class TestMakeAccountF : public Test{
                 ctrAuthen.makeAccount(cpf, senha, nome);
             } catch (runtime_error &x) {
                 out = x.what();
-                if(out == expected)
-                    result = ResultPass();
-                else
-                    result = ResultFail();
+                if(out == expected) result = ResultPass();
+                else result = ResultFail();
 
                 // Limpando os dados
                 sqlite3_exec(
@@ -147,6 +151,7 @@ class TestMakeLogin : public Test{
             } catch (runtime_error &x) {
                 out = x.what();
                 result = ResultFail();
+                
                 // Limpando os dados
                 sqlite3_exec(
                     DB::getInstance()->getDB(),
@@ -177,6 +182,47 @@ class TestMakeLogin : public Test{
                 "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
                 nullptr, nullptr, nullptr
             );
+            delete contexto;
+        }
+};
+
+class TestMakeLoginF : public Test{
+    public:
+        void exec(){
+            // Definindo os dados do teste.
+            nameTest = "Teste->AuthentCommandLoginF->execute";
+            typeTest = InvalidArgument();
+            in = "Cpf: 842.259.180-41 | Senha: B1g#ji";
+            expected = "CPF não encontrado.";
+
+            // Criando as variáveis do teste
+            CtrState *contexto = new CtrState();
+            AuthenticationSer ctrAuthen = AuthenticationSer(contexto);
+            Ncpf cpf;
+            Senha senha;
+            Nome nome;
+            cpf.setValor("842.259.180-41");
+            senha.setValor("B1g#ji");
+            nome.setValor("Ze de Fulano");
+
+            
+            // Roda o teste
+            try{
+                ctrAuthen.login(cpf, senha);
+            } catch (runtime_error &x) {
+                out = x.what();
+                if(out == expected) result = ResultPass();
+                else result = ResultFail();
+                result = ResultPass();
+                
+                // Limpando os dados
+                delete contexto;
+                return;
+            };
+            
+            out = "void";
+            result = ResultFail();
+
             delete contexto;
         }
 };
