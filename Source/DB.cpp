@@ -60,7 +60,7 @@ public:
         if (!instance) throw runtime_error("Instancia DB ainda não foi iniciada.");
 
         const char *sqlQuery = sqlQueryS.c_str();
-        result->clear();
+        if(result) result->clear();
         char *errorMsg;
 
         bool exc_result = sqlite3_exec(db, sqlQuery, callback, result, &errorMsg);

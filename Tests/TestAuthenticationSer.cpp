@@ -5,7 +5,7 @@ class TestMakeAccount : public Test{
     public:
         void exec(){
             // Definindo os dados do teste.
-            nameTest = "Teste->AuthentCommandMakeAccount->execute";
+            nameTest = "Teste->AuthentCommandMakeAccount";
             typeTest = ValidArgument();
             in = "Cpf: 842.259.180-41 / Senha: B1g#ji / Nome: Ze de Fulano";
             expected = "void";
@@ -60,7 +60,7 @@ class TestMakeAccountF : public Test{
     public:
         void exec(){
             // Definindo os dados do teste.
-            nameTest = "Teste->AuthentCommandMakeAccountF->execute";
+            nameTest = "Teste->AuthentCommandMakeAccountF";
             typeTest = InvalidArgument();
             in = "Cpf: 842.259.180-41 / Senha: B1g#ji / Nome: Ze de Fulano";
             expected = "O CPF já está sendo utilizado.";
@@ -114,7 +114,7 @@ class TestMakeLogin : public Test{
     public:
         void exec(){
             // Definindo os dados do teste.
-            nameTest = "Teste->AuthentCommandLogin->execute";
+            nameTest = "Teste->AuthentCommandLogin";
             typeTest = ValidArgument();
             in = "Cpf: 842.259.180-41 / Senha: B1g#ji";
             expected = "void";
@@ -174,7 +174,7 @@ class TestMakeLoginF : public Test{
     public:
         void exec(){
             // Definindo os dados do teste.
-            nameTest = "Teste->AuthentCommandLoginF->execute";
+            nameTest = "Teste->AuthentCommandLoginF";
             typeTest = InvalidArgument();
             in = "Cpf: 842.259.180-41 / Senha: B1g#ji";
             expected = "CPF não encontrado.";

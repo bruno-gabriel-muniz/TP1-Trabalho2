@@ -48,7 +48,7 @@ void AccountCommandMakeWallet::execute(Nome nome, TipoPerfil perfil){
     // Retorna erro caso o limite de carteiras tenha sido atingido.
     if(result->size() >= 5) throw runtime_error("Erro: limite de Carteiras atingido.");
     for(Linha &linha : result[0]){
-        if(linha["NOME"] == nome.getValor()) throw runtime_error("Erro: outra carteia já possui esse nome.");
+        if(linha["NOME"] == nome.getValor()) throw runtime_error("Erro: outra carteira já possui esse nome.");
     }
 
     Codigo codigo;

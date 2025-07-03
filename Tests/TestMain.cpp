@@ -19,4 +19,6 @@ int main(){
     cout << "\t\t\t\t\t__Account__";
     cout << "\n\n";
     TestMakeWallet().run();
+    TestMakeWalletFDuplicate().run();
+    TestMakeWalletFLimitWallet().run();
 }

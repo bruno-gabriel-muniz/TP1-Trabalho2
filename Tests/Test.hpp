@@ -67,7 +67,7 @@ class Test{
 void Test::show(){
     cout << "\n";
     // Nome do teste
-    cout << nameTest << " | TypeTest: " << typeTest.show() << ":\n\n";
+    cout << nameTest << "\nTypeTest: " << typeTest.show() << ":\n\n";
     // Dados do teste
     cout << "In: " << in
          << " | Expected: " << expected
