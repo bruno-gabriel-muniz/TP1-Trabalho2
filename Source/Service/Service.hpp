@@ -4,6 +4,7 @@
  */
 
 #pragma once
+#include <cstdlib>
 
 #include "Source/InterfacesService.hpp"
 #include "Source/Presentation/Presentation.hpp"
@@ -120,7 +121,7 @@ public:
 /**
  * @class AccountCommandChangeName
  * @ingroup ComandosService
- * @brief Altera o nome da conta.
+ * @brief Altera o nome da cont
  */
 class AccountCommandChangeName : public Command {
 public:
@@ -340,3 +341,34 @@ public:
     vector<Ordem> listOrders();
     void editWallet(Nome* nome = nullptr, TipoPerfil* perfil = nullptr);
 };
+
+// Cria e valida os codigos.
+
+inline bool invalidCodigo(string codigo){
+    Tabela result;
+    char *errorMsg;
+
+    string findCodigoS = "SELECT CODIGO FROM Carteiras WHERE CODIGO = \"" + codigo + "\";";
+    const char *findCodigo = findCodigoS.c_str();
+
+    bool excResult = sqlite3_exec(DB::getInstance()->getDB(), findCodigo, callback, &result, &errorMsg);
+    // Retorna erro caso o SQLite falhe.
+    if(excResult != SQLITE_OK){
+        string sqlError = errorMsg ? string(errorMsg) : "Erro desconhecido.";
+        sqlite3_free(errorMsg);
+        throw runtime_error("Erro ao procurar a carteira: " + sqlError);
+    }
+    if(result.size() > 0) return true;
+    return false;
+}
+
+inline string gerarCodigo(){
+    long long codigoInt = 100000 + (rand() % 100000);
+    string codigo = to_string(codigoInt).substr(1, 5);
+    
+    while(invalidCodigo(codigo)){
+        codigoInt = 100000 + (rand() % 100000);
+        codigo = to_string(codigoInt).substr(1, 5);
+    }
+    return codigo;
+}
