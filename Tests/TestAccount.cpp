@@ -11,10 +11,12 @@ class TestMakeWallet : public Test{
             expected = "void";
 
             // Cria as variáveis do teste
+            DB *db = DB::getInstance(); // DB sqlite
+            Tabela *resultSql = new Tabela(); // Result query sql
+
             CtrState *contexto = new CtrState();
             AccountSer ctrAccount = AccountSer(contexto);
             Conta *user = new Conta();
-            Tabela resultSql;
 
             Ncpf cpf;
             Senha senha;
@@ -44,10 +46,10 @@ class TestMakeWallet : public Test{
                 result = ResultFail();
                 
                 // Limpa os Dados;
-                sqlite3_exec(
-                    DB::getInstance()->getDB(),
-                    "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\" AND NOME = Carteira Agresiva;",
-                    nullptr, nullptr, nullptr
+                db->exec(
+                    "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\" AND NOME = \"Carteira Agresiva\";",
+                    resultSql,
+                    "Erro ao limpar os dados do teste: "
                 );
                 delete contexto;
                 return ;
@@ -57,22 +59,21 @@ class TestMakeWallet : public Test{
             
             string findWalletS = "SELECT NOME, CODIGO, PERFIL, CPF FROM Carteiras WHERE CPF = \"" + cpf.getValor() +
                         "\" AND NOME = \"" + nome.getValor() +"\"";
-            const char *findWallet = findWalletS.c_str();
-
-            bool excResult = sqlite3_exec(DB::getInstance()->getDB(), findWallet, callback, &resultSql, nullptr);
+            db->exec(findWalletS, resultSql, "Erro ao procurar a carteira criada no teste.");
             
-            if(resultSql[0]["NOME"] != nome.getValor()) result = ResultFail();
-            else if(resultSql[0]["PERFIL"] != perfil.getValor()) result = ResultFail();
-            else if(resultSql[0]["CPF"] != cpf.getValor()) result = ResultFail();
+            if(resultSql[0][0]["NOME"] != nome.getValor()) result = ResultFail();
+            else if(resultSql[0][0]["PERFIL"] != perfil.getValor()) result = ResultFail();
+            else if(resultSql[0][0]["CPF"] != cpf.getValor()) result = ResultFail();
             else result = ResultPass();
 
             out = "Void";
 
             // Limpa os Dados;
-            sqlite3_exec(
-                DB::getInstance()->getDB(),
-                "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\";",
-                nullptr, nullptr, nullptr
+            db->exec(
+                "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\" AND NOME = \"Carteira Agresiva\";",
+                resultSql,
+                "Erro ao limpar os dados do teste: "
             );
+            delete contexto;
         }
 };

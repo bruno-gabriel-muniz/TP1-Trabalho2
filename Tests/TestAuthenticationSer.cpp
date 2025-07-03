@@ -11,6 +11,9 @@ class TestMakeAccount : public Test{
             expected = "void";
 
             // Cria as variáveis do teste
+            DB *db = DB::getInstance(); // DB sqlite
+            Tabela *resultSql = new Tabela(); // Result query sql
+
             CtrState *contexto = new CtrState();
             AuthenticationSer ctrAuthen = AuthenticationSer(contexto);
             Ncpf cpf;
@@ -28,11 +31,7 @@ class TestMakeAccount : public Test{
                 result = ResultFail();
                 
                 // Limpa os Dados;
-                sqlite3_exec(
-                    DB::getInstance()->getDB(),
-                    "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
-                    nullptr, nullptr, nullptr
-                );
+                db->exec("DELETE FROM Contas WHERE CPF = \"842.259.180-41\";", resultSql, "Erro ao excluir a conta: ");
                 delete contexto;
                 return ;
             }
@@ -52,11 +51,7 @@ class TestMakeAccount : public Test{
             };
 
             // Limpa os Dados;
-            sqlite3_exec(
-                DB::getInstance()->getDB(),
-                "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
-                nullptr, nullptr, nullptr
-            );
+            db->exec("DELETE FROM Contas WHERE CPF = \"842.259.180-41\";", resultSql, "Erro ao excluir a conta: ");
             delete contexto;
         }
 };
@@ -67,10 +62,13 @@ class TestMakeAccountF : public Test{
             // Definindo os dados do teste.
             nameTest = "Teste->AuthentCommandMakeAccountF->execute";
             typeTest = InvalidArgument();
-            in = "Cpf: 842.259.180-41 | Senha: B1g#ji | Nome: Ze de Fulano";
+            in = "Cpf: 842.259.180-41 / Senha: B1g#ji / Nome: Ze de Fulano";
             expected = "O CPF já está sendo utilizado.";
 
             // Criando as variáveis do teste
+            DB *db = DB::getInstance(); // DB sqlite
+            Tabela *resultSql = new Tabela(); // Result query sql
+
             CtrState *contexto = new CtrState();
             AuthenticationSer ctrAuthen = AuthenticationSer(contexto);
             Ncpf cpf;
@@ -81,12 +79,12 @@ class TestMakeAccountF : public Test{
             nome.setValor("Ze de Fulano");
 
             // Configurando DB.
-            string insertNewAccount_s = "INSERT INTO Contas (CPF, SENHA, NOME) VALUES (\"" +
+            string insertNewAccountS = "INSERT INTO Contas (CPF, SENHA, NOME) VALUES (\"" +
                                         cpf.getValor() + "\", \"" + senha.getValor() + "\", \"" +
                                         nome.getValor() +
                                         "\")";
-            const char *insertNewAccount = insertNewAccount_s.c_str();
-            bool exc_result = sqlite3_exec(DB::getInstance()->getDB(), insertNewAccount, nullptr, 0, nullptr);
+            db->exec(insertNewAccountS, resultSql, "Erro ao inserir carteira para o teste: ");
+
 
             // Roda o teste
             try{
@@ -97,11 +95,7 @@ class TestMakeAccountF : public Test{
                 else result = ResultFail();
 
                 // Limpa os dados
-                sqlite3_exec(
-                    DB::getInstance()->getDB(),
-                    "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
-                    nullptr, nullptr, nullptr
-                );
+                db->exec("DELETE FROM Contas WHERE CPF = \"842.259.180-41\";", resultSql, "Erro ao excluir a conta: ");
                 delete contexto;
                 return;
             }
@@ -111,11 +105,7 @@ class TestMakeAccountF : public Test{
             out = "void";
 
             // Limpa os Dados;
-            sqlite3_exec(
-                DB::getInstance()->getDB(),
-                "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
-                nullptr, nullptr, nullptr
-            );
+            db->exec("DELETE FROM Contas WHERE CPF = \"842.259.180-41\";", resultSql, "Erro ao excluir a conta: ");
             delete contexto;
         }
 };
@@ -126,10 +116,13 @@ class TestMakeLogin : public Test{
             // Definindo os dados do teste.
             nameTest = "Teste->AuthentCommandLogin->execute";
             typeTest = ValidArgument();
-            in = "Cpf: 842.259.180-41 | Senha: B1g#ji";
+            in = "Cpf: 842.259.180-41 / Senha: B1g#ji";
             expected = "void";
 
             // Criando as variáveis do teste
+            DB *db = DB::getInstance(); // DB sqlite
+            Tabela *resultSql = new Tabela(); // Result query sql
+
             CtrState *contexto = new CtrState();
             AuthenticationSer ctrAuthen = AuthenticationSer(contexto);
             Ncpf cpf;
@@ -141,11 +134,9 @@ class TestMakeLogin : public Test{
 
             
             // Insere a conta no DB.
-            string insertNewAccount_s = "INSERT INTO Contas (CPF, SENHA, NOME) VALUES (\""
+            string insertNewAccountS = "INSERT INTO Contas (CPF, SENHA, NOME) VALUES (\""
                                     + cpf.getValor() + "\", \"" + senha.getValor() + "\", \"" + nome.getValor() + "\")";
-            const char *insertNewAccount = insertNewAccount_s.c_str();
-            bool exc_result = sqlite3_exec(DB::getInstance()->getDB(), insertNewAccount, nullptr, 0, nullptr);
-
+            db->exec(insertNewAccountS, resultSql, "Erro ao inserir a conta para o teste: ");
             // Roda o teste
             try{
                 ctrAuthen.login(cpf, senha);
@@ -154,11 +145,7 @@ class TestMakeLogin : public Test{
                 result = ResultFail();
                 
                 // Limpa os dados
-                sqlite3_exec(
-                    DB::getInstance()->getDB(),
-                    "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
-                    nullptr, nullptr, nullptr
-                );
+                db->exec("DELETE FROM Contas WHERE CPF = \"842.259.180-41\";", resultSql, "Erro ao excluir a conta: ");
                 delete contexto;
                 return;
             };
@@ -178,11 +165,7 @@ class TestMakeLogin : public Test{
             };
 
             // Limpa os Dados;
-            sqlite3_exec(
-                DB::getInstance()->getDB(),
-                "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
-                nullptr, nullptr, nullptr
-            );
+            db->exec("DELETE FROM Contas WHERE CPF = \"842.259.180-41\";", resultSql, "Erro ao excluir a conta: ");
             delete contexto;
         }
 };
@@ -193,7 +176,7 @@ class TestMakeLoginF : public Test{
             // Definindo os dados do teste.
             nameTest = "Teste->AuthentCommandLoginF->execute";
             typeTest = InvalidArgument();
-            in = "Cpf: 842.259.180-41 | Senha: B1g#ji";
+            in = "Cpf: 842.259.180-41 / Senha: B1g#ji";
             expected = "CPF não encontrado.";
 
             // Criando as variáveis do teste

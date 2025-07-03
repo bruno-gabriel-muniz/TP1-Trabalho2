@@ -8,6 +8,22 @@ using namespace std;
 using Linha = map<string, string>;
 using Tabela = vector<Linha>;
 
+int callback(void *Data, int QuantColumns, char** valores, char** colunas){
+    Tabela* tabela = static_cast<Tabela *>(Data);
+    Linha linha; 
+    
+    for(int i = 0; i < QuantColumns; i++){
+        string nomeColuna = colunas[i] ? colunas[i] : "";
+        string valor = valores[i] ? valores[i] : "";
+        linha[nomeColuna] = valor;
+    }
+    
+    tabela->push_back(linha);
+
+    return 0;
+}
+
+
 class DB {
 private:
     static DB* instance;     // Ponteiro para o Singleton
@@ -40,26 +56,26 @@ public:
         return db;
     }
 
+    bool exec(string sqlQueryS, Tabela *result, string errMsg){
+        if (!instance) throw runtime_error("Instancia DB ainda não foi iniciada.");
+
+        const char *sqlQuery = sqlQueryS.c_str();
+        result->clear();
+        char *errorMsg;
+
+        bool exc_result = sqlite3_exec(db, sqlQuery, callback, result, &errorMsg);
+        if(exc_result != SQLITE_OK){
+            string sqlError = errorMsg ? string(errorMsg) : "Erro desconhecido.";
+            sqlite3_free(errorMsg);
+            throw runtime_error(errMsg + "sql_error: " + sqlError);
+        }
+        return exc_result;
+    };
+
     ~DB() {
         sqlite3_close(db);
     }
 };
-
-
-int callback(void *Data, int QuantColumns, char** valores, char** colunas){
-    Tabela* tabela = static_cast<Tabela *>(Data);
-    Linha linha; 
-    
-    for(int i = 0; i < QuantColumns; i++){
-        string nomeColuna = colunas[i] ? colunas[i] : "";
-        string valor = valores[i] ? valores[i] : "";
-        linha[nomeColuna] = valor;
-    }
-    
-    tabela->push_back(linha);
-
-    return 0;
-}
 
 // Inicialização do ponteiro estático
 DB* DB::instance = nullptr;
