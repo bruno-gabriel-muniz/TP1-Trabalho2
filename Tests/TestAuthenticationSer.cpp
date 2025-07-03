@@ -7,10 +7,10 @@ class TestMakeAccount : public Test{
             // Definindo os dados do teste.
             nameTest = "Teste->AuthentCommandMakeAccount->execute";
             typeTest = ValidArgument();
-            in = "Cpf: 842.259.180-41 | Senha: B1g#ji | Nome: Ze de Fulano";
+            in = "Cpf: 842.259.180-41 / Senha: B1g#ji / Nome: Ze de Fulano";
             expected = "void";
 
-            // Criando as variáveis do teste
+            // Cria as variáveis do teste
             CtrState *contexto = new CtrState();
             AuthenticationSer ctrAuthen = AuthenticationSer(contexto);
             Ncpf cpf;
@@ -20,23 +20,24 @@ class TestMakeAccount : public Test{
             senha.setValor("B1g#ji");
             nome.setValor("Ze de Fulano");
 
-            // Rodando o teste
+            // Roda o teste
             try{
                 ctrAuthen.makeAccount(cpf, senha, nome);
             } catch (runtime_error &x) {
                 out = x.what();
                 result = ResultFail();
                 
-                // Limpando os Dados;
+                // Limpa os Dados;
                 sqlite3_exec(
                     DB::getInstance()->getDB(),
                     "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
                     nullptr, nullptr, nullptr
                 );
                 delete contexto;
+                return ;
             }
 
-            // Verificando os dados;
+            // Verifica os dados;
             Conta *userContext = contexto->getUser();
 
             if(userContext->getNcpf().getValor() == cpf.getValor() and
@@ -50,7 +51,7 @@ class TestMakeAccount : public Test{
                 result = ResultFail();
             };
 
-            // Limpando os Dados;
+            // Limpa os Dados;
             sqlite3_exec(
                 DB::getInstance()->getDB(),
                 "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
@@ -87,7 +88,7 @@ class TestMakeAccountF : public Test{
             const char *insertNewAccount = insertNewAccount_s.c_str();
             bool exc_result = sqlite3_exec(DB::getInstance()->getDB(), insertNewAccount, nullptr, 0, nullptr);
 
-            // Rodando o teste
+            // Roda o teste
             try{
                 ctrAuthen.makeAccount(cpf, senha, nome);
             } catch (runtime_error &x) {
@@ -95,7 +96,7 @@ class TestMakeAccountF : public Test{
                 if(out == expected) result = ResultPass();
                 else result = ResultFail();
 
-                // Limpando os dados
+                // Limpa os dados
                 sqlite3_exec(
                     DB::getInstance()->getDB(),
                     "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
@@ -109,7 +110,7 @@ class TestMakeAccountF : public Test{
             result = ResultFail();
             out = "void";
 
-            // Limpando os Dados;
+            // Limpa os Dados;
             sqlite3_exec(
                 DB::getInstance()->getDB(),
                 "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
@@ -152,7 +153,7 @@ class TestMakeLogin : public Test{
                 out = x.what();
                 result = ResultFail();
                 
-                // Limpando os dados
+                // Limpa os dados
                 sqlite3_exec(
                     DB::getInstance()->getDB(),
                     "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
@@ -176,7 +177,7 @@ class TestMakeLogin : public Test{
                 result = ResultFail();
             };
 
-            // Limpando os Dados;
+            // Limpa os Dados;
             sqlite3_exec(
                 DB::getInstance()->getDB(),
                 "DELETE FROM Contas WHERE CPF = \"842.259.180-41\";",
@@ -213,9 +214,8 @@ class TestMakeLoginF : public Test{
                 out = x.what();
                 if(out == expected) result = ResultPass();
                 else result = ResultFail();
-                result = ResultPass();
                 
-                // Limpando os dados
+                // Limpa os dados
                 delete contexto;
                 return;
             };

@@ -51,7 +51,9 @@ int callback(void *Data, int QuantColumns, char** valores, char** colunas){
     Linha linha; 
     
     for(int i = 0; i < QuantColumns; i++){
-        linha[colunas[i]] = valores[i];
+        string nomeColuna = colunas[i] ? colunas[i] : "";
+        string valor = valores[i] ? valores[i] : "";
+        linha[nomeColuna] = valor;
     }
     
     tabela->push_back(linha);
@@ -87,7 +89,7 @@ public:
             "\"CODIGO\"	TEXT NOT NULL,"
             "\"PERFIL\"	TEXT NOT NULL,"
             "\"CPF\"	TEXT NOT NULL,"
-            "PRIMARY KEY(\"CODIGO\" AUTOINCREMENT),"
+            "PRIMARY KEY(\"CODIGO\"),"
             "FOREIGN KEY(\"CPF\") REFERENCES \"Contas\"(\"CPF\")"
         ")";
         result = sqlite3_exec(Db->getDB(), createCarteiras, nullptr, 0, &errorMsg);
