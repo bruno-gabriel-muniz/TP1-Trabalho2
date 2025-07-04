@@ -342,7 +342,7 @@ public:
     void editWallet(Nome* nome = nullptr, TipoPerfil* perfil = nullptr);
 };
 
-// Cria e valida os codigos.
+// Cria e valida os codigos das carteiras.
 
 inline bool invalidCodigo(string codigo){
     Tabela result;

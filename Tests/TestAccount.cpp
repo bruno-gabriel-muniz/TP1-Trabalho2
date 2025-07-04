@@ -193,7 +193,7 @@ class TestMakeWalletFLimitWallet : public Test{
                 string codigoF = gerarCodigo();
                 string insertWalletS = 
                     "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"" + to_string(i) + "\", \"" +
-                    codigoF + "\", \"Agresiva\", \"842.259.180-41\")";
+                    codigoF + "\", \"Agressivo\", \"842.259.180-41\")";
                 db->exec(insertWalletS, resultSql, "Erro ao inserir a carteira: ");
             }
 
@@ -216,6 +216,177 @@ class TestMakeWalletFLimitWallet : public Test{
             };
 
             out = "void";
+            result = ResultFail();
+
+            // Limpa os Dados;
+            db->exec(
+                "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\";",
+                resultSql,
+                "Erro ao limpar os dados do teste: "
+            );
+            delete contexto;
+        }
+};
+
+class TestManageWallet : public Test{
+    public:
+        void exec(){
+            // Define os dados do Teste.
+            nameTest = "Teste->AccountCommandManageWallet";
+            typeTest = ValidArgument();
+            in = "Nome: Carteira Agresiva";
+            expected = "*InvestmentPre";
+
+            // Cria as variáveis do teste
+            DB *db = DB::getInstance(); // DB sqlite
+            Tabela *resultSql = new Tabela(); // Result query sql
+
+            CtrState *contexto = new CtrState();
+            AccountSer ctrAccount = AccountSer(contexto);
+            Conta *user = new Conta();
+
+            Ncpf cpf;
+            Senha senha;
+            Nome nomeUser;
+
+            cpf.setValor("842.259.180-41");
+            senha.setValor("B1g#ji");
+            nomeUser.setValor("Ze de Fulano");
+
+            user->setNcpf(cpf);
+            user->setSenha(senha);
+            user->setNome(nomeUser);
+
+            contexto->setUser(user);
+
+            TipoPerfil perfil;
+            Nome nome;
+            perfil.setValor("Agressivo");
+            nome.setValor("Carteira Agresiva");
+
+            // Configura os dados no DB
+            string codigoF = gerarCodigo();
+            string insertWalletS = 
+                "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"Carteira Agresiva\", \"" +
+                codigoF + "\", \"Agressivo\", \"842.259.180-41\")";
+            db->exec(insertWalletS, resultSql, "Erro ao inserir a carteira: ");
+
+            for(int i = 0; i < 4; i++){
+                string codigoF = gerarCodigo();
+                string insertWalletS = 
+                    "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"" + to_string(i) + "\", \"" +
+                    codigoF + "\", \"Agressivo\", \"842.259.180-41\")";
+                db->exec(insertWalletS, resultSql, "Erro ao inserir a carteira: ");
+            }
+
+            // Roda o teste
+            try {
+                PresentationInte *a = ctrAccount.manageWallet(nome);
+            } catch (runtime_error &x) {
+                out = x.what();
+                result = ResultFail();
+
+                // Limpa os Dados;
+                db->exec(
+                    "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\";",
+                    resultSql,
+                    "Erro ao limpar os dados do teste: "
+                );
+                delete contexto;
+                return ;
+            };
+            
+            out = "*InvestmentPre, but incorret data";
+            
+            // Verfica os dados da carteira
+            Carteira *carteiraResult = contexto->getCarteira();
+
+            if(carteiraResult->getNome().getValor() != nome.getValor()) result = ResultFail();
+            else if (carteiraResult->getTipoPerfil().getValor() != perfil.getValor()) result = ResultFail();
+            else {
+                result = ResultPass();
+                out = "*InvestmentPre";
+            }
+
+            // Limpa os Dados;
+            db->exec(
+                "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\";",
+                resultSql,
+                "Erro ao limpar os dados do teste: "
+            );
+            delete contexto;
+        }
+};
+
+class TestManageWalletNotFound : public Test{
+    public:
+        void exec(){
+            // Define os dados do Teste.
+            nameTest = "Teste->AccountCommandManageWallet (Not Found)";
+            typeTest = InvalidArgument();
+            in = "Nome: Carteira Conserv";
+            expected = "Erro: carteira não encontrada.";
+
+            // Cria as variáveis do teste
+            DB *db = DB::getInstance(); // DB sqlite
+            Tabela *resultSql = new Tabela(); // Result query sql
+
+            CtrState *contexto = new CtrState();
+            AccountSer ctrAccount = AccountSer(contexto);
+            Conta *user = new Conta();
+
+            Ncpf cpf;
+            Senha senha;
+            Nome nomeUser;
+
+            cpf.setValor("842.259.180-41");
+            senha.setValor("B1g#ji");
+            nomeUser.setValor("Ze de Fulano");
+
+            user->setNcpf(cpf);
+            user->setSenha(senha);
+            user->setNome(nomeUser);
+
+            contexto->setUser(user);
+
+            TipoPerfil perfil;
+            Nome nome;
+            perfil.setValor("Agressivo");
+            nome.setValor("Carteira Conserv");
+
+            // Configura os dados no DB
+            string codigoF = gerarCodigo();
+            string insertWalletS = 
+                "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"Carteira Agresiva\", \"" +
+                codigoF + "\", \"Agressivo\", \"842.259.180-41\")";
+            db->exec(insertWalletS, resultSql, "Erro ao inserir a carteira: ");
+
+            for(int i = 0; i < 4; i++){
+                string codigoF = gerarCodigo();
+                string insertWalletS = 
+                    "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"" + to_string(i) + "\", \"" +
+                    codigoF + "\", \"Agressivo\", \"842.259.180-41\")";
+                db->exec(insertWalletS, resultSql, "Erro ao inserir a carteira: ");
+            }
+
+            // Roda o teste
+            try {
+                PresentationInte *a = ctrAccount.manageWallet(nome);
+            } catch (runtime_error &x) {
+                out = x.what();
+                result = ResultPass();
+
+                // Limpa os Dados;
+                db->exec(
+                    "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\";",
+                    resultSql,
+                    "Erro ao limpar os dados do teste: "
+                );
+                delete contexto;
+                return ;
+            };
+            
+            out = "*InvestmentPre";
             result = ResultFail();
 
             // Limpa os Dados;

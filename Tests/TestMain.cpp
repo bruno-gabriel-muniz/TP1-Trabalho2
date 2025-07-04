@@ -21,4 +21,7 @@ int main(){
     TestMakeWallet().run();
     TestMakeWalletFDuplicate().run();
     TestMakeWalletFLimitWallet().run();
+    cout << "\n\n";
+    TestManageWallet().run();
+    TestManageWalletNotFound().run();
 }

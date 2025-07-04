@@ -64,7 +64,7 @@ class Test{
         }; // Método que roda o teste  
 };
 
-void Test::show(){
+inline void Test::show(){
     cout << "\n";
     // Nome do teste
     cout << nameTest << "\nTypeTest: " << typeTest.show() << ":\n\n";
