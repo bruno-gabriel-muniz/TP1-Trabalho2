@@ -143,7 +143,6 @@ void AccountCommandChangeName::execute(Nome nome){
     return;
 }
 
-// TODO:
 PresentationInte* AccountCommandRemoveAccount::execute(){
     // Inicia os dados do DB;
     DB *db = DB::getInstance();
