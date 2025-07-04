@@ -626,7 +626,7 @@ class TestChangeSenha : public Test{
             db->exec(
                 "INSERT INTO Contas (NOME, CPF, SENHA) VALUES (\"Ze de Fulano\", \"842.259.180-41\", \"B1g#ji\")",
                 resultSql,
-                "Erro ao inserir a conta de teste: "
+                "Erro ao limpar os dados do teste: "
             );
 
             // Roda o teste
@@ -640,7 +640,7 @@ class TestChangeSenha : public Test{
                 db->exec(
                     "DELETE FROM Contas WHERE CPF = \"" + cpf.getValor() + "\"",
                     resultSql,
-                    "Erro ao inserir a conta de teste: "
+                    "Erro ao limpar os dados do teste"
                 );
                 delete contexto;
                 delete resultSql;
@@ -657,6 +657,89 @@ class TestChangeSenha : public Test{
             );
 
             if(resultSql[0][0]["SENHA"] != novaSenha.getValor()) result = ResultFail();
+            else out = "void";
+
+            // Limpa os Dados;
+            db->exec(
+                "DELETE FROM Contas WHERE CPF = \"" + cpf.getValor() + "\";",
+                resultSql,
+                "Erro ao limpar os dados do teste: "
+            );
+            delete contexto;
+            delete resultSql;
+        }
+};
+
+
+
+class TestChangeNome : public Test{
+        public:
+        void exec(){
+            // Define os dados do Teste.
+            nameTest = "Test->AccountCommandChangeNome";
+            typeTest = ValidArgument();
+            in = "Nome: Jose";
+            expected = "void";
+
+            // Cria as variáveis do teste
+            DB *db = DB::getInstance(); // DB sqlite
+            Tabela *resultSql = new Tabela(); // Result query sql
+
+            CtrState *contexto = new CtrState();
+            AccountSer ctrAccount = AccountSer(contexto);
+            Conta *user = new Conta();
+
+            Ncpf cpf;
+            Senha senha;
+            Nome nomeUser;
+
+            cpf.setValor("842.259.180-41");
+            senha.setValor("B1g#ji");
+            nomeUser.setValor("Ze de Fulano");
+
+            user->setNcpf(cpf);
+            user->setSenha(senha);
+            user->setNome(nomeUser);
+
+            contexto->setUser(user);
+
+            Nome novaNome;
+            novaNome.setValor("Jose");
+
+            db->exec(
+                "INSERT INTO Contas (NOME, CPF, SENHA) VALUES (\"Ze de Fulano\", \"842.259.180-41\", \"B1g#ji\")",
+                resultSql,
+                "Erro ao inserir a conta de teste: "
+            );
+
+            // Roda o teste
+            try {
+                ctrAccount.changeName(novaNome);
+            } catch (runtime_error &x) {
+                out = x.what();
+                result = ResultFail();
+
+                // Limpa os Dados;
+                db->exec(
+                    "DELETE FROM Contas WHERE CPF = \"" + cpf.getValor() + "\"",
+                    resultSql,
+                    "Erro ao limpar os dados do Teste: "
+                );
+                delete contexto;
+                delete resultSql;
+                return ;
+            };
+            
+            result = ResultPass();
+            out = "void, but incorret data.";
+
+            db->exec(
+                "SELECT NOME FROM Contas WHERE CPF = \"" + cpf.getValor() + "\";",
+                resultSql,
+                "Erro ao procurar a nova senha: "
+            );
+
+            if(resultSql[0][0]["NOME"] != novaNome.getValor()) result = ResultFail();
             else out = "void";
 
             // Limpa os Dados;
