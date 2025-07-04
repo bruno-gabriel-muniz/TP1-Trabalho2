@@ -31,6 +31,7 @@ PresentationInte* AccountCommandManageWallet::execute(Nome nome){
     contexto->setCarteira(carteira);
 
     // Entra na cartiera
+    delete resultSql;
     return new InvestmentPre(contexto);
 }
 
@@ -60,6 +61,7 @@ void AccountCommandMakeWallet::execute(Nome nome, TipoPerfil perfil){
                             "\", \"" + cpf.getValor() +
                             "\")";
     db->exec(insertWalletS, resultSql, "Erro ao inserir a carteira: ");
+    delete resultSql;
 }
 
 // TODO: 
@@ -70,7 +72,7 @@ void AccountCommandRemoveWallet::execute(Nome nome){
 vector<Carteira> AccountCommandListWallets::execute(){
     // Configura os dados do DB;
     DB *db = DB::getInstance();
-    Tabela *resultSql;
+    Tabela *resultSql = new Tabela();
 
     // Procura as carteiras no DB;
     db->exec(
@@ -79,7 +81,7 @@ vector<Carteira> AccountCommandListWallets::execute(){
         resultSql,
         "Erro ao procurar as carteiras da conta: "
     );
-    
+
     // Formata a saída.
     vector<Carteira> result;
 
@@ -99,7 +101,7 @@ vector<Carteira> AccountCommandListWallets::execute(){
 
         result.push_back(carteira);
     }
-    
+    delete resultSql;
     return result;
 }
 

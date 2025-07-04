@@ -30,6 +30,7 @@ PresentationInte* AuthentCommandMakeAccount::execute(Ncpf cpf, Senha senha, Nome
     user->setNome(nome);
     contexto->setUser(user);
 
+    delete result;
     return new AccountPre(contexto);
 }
 
@@ -61,6 +62,7 @@ PresentationInte* AuthentCommandLogin::execute(Ncpf cpf, Senha senha){
     user->setNome(nome);
     contexto->setUser(user);
 
+    delete result;
     return new AccountPre(contexto);
 
 }

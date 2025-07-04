@@ -24,4 +24,6 @@ int main(){
     cout << "\n\n";
     TestManageWallet().run();
     TestManageWalletNotFound().run();
+    cout << "\n\n";
+    TestListWallet().run();
 }

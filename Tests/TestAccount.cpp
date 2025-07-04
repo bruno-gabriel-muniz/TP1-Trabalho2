@@ -52,6 +52,7 @@ class TestMakeWallet : public Test{
                     "Erro ao limpar os dados do teste: "
                 );
                 delete contexto;
+                delete resultSql;
                 return ;
             };
 
@@ -75,6 +76,7 @@ class TestMakeWallet : public Test{
                 "Erro ao limpar os dados do teste: "
             );
             delete contexto;
+            delete resultSql;
         }
 };
 
@@ -137,6 +139,7 @@ class TestMakeWalletFDuplicate : public Test{
                     "Erro ao limpar os dados do teste: "
                 );
                 delete contexto;
+                delete resultSql;
                 return ;
             };
 
@@ -150,6 +153,7 @@ class TestMakeWalletFDuplicate : public Test{
                 "Erro ao limpar os dados do teste: "
             );
             delete contexto;
+            delete resultSql;
         }
 };
 
@@ -212,6 +216,7 @@ class TestMakeWalletFLimitWallet : public Test{
                     "Erro ao limpar os dados do teste: "
                 );
                 delete contexto;
+                delete resultSql;
                 return ;
             };
 
@@ -225,8 +230,11 @@ class TestMakeWalletFLimitWallet : public Test{
                 "Erro ao limpar os dados do teste: "
             );
             delete contexto;
+            delete resultSql;
         }
 };
+
+
 
 class TestManageWallet : public Test{
     public:
@@ -293,6 +301,7 @@ class TestManageWallet : public Test{
                     "Erro ao limpar os dados do teste: "
                 );
                 delete contexto;
+                delete resultSql;
                 return ;
             };
             
@@ -315,6 +324,7 @@ class TestManageWallet : public Test{
                 "Erro ao limpar os dados do teste: "
             );
             delete contexto;
+            delete resultSql;
         }
 };
 
@@ -383,6 +393,7 @@ class TestManageWalletNotFound : public Test{
                     "Erro ao limpar os dados do teste: "
                 );
                 delete contexto;
+                delete resultSql;
                 return ;
             };
             
@@ -396,5 +407,122 @@ class TestManageWalletNotFound : public Test{
                 "Erro ao limpar os dados do teste: "
             );
             delete contexto;
+            delete resultSql;
+        }
+};
+
+
+
+class TestListWallet : public Test{
+    public:
+        void exec(){
+            // Define os dados do Teste.
+            nameTest = "Teste->AccountCommandListWallet";
+            typeTest = ValidArgument();
+            in = "void";
+            expected = "vector<Carteira>";
+
+            // Cria as variáveis do teste
+            DB *db = DB::getInstance(); // DB sqlite
+            Tabela *resultSql = new Tabela(); // Result query sql
+
+            CtrState *contexto = new CtrState();
+            AccountSer ctrAccount = AccountSer(contexto);
+            Conta *user = new Conta();
+
+            Ncpf cpf;
+            Senha senha;
+            Nome nomeUser;
+
+            cpf.setValor("842.259.180-41");
+            senha.setValor("B1g#ji");
+            nomeUser.setValor("Ze de Fulano");
+
+            user->setNcpf(cpf);
+            user->setSenha(senha);
+            user->setNome(nomeUser);
+
+            contexto->setUser(user);
+
+            TipoPerfil perfil;
+            Nome nome;
+            perfil.setValor("Agressivo");
+            nome.setValor("Carteira Agresiva");
+            
+            // Configura os dados no DB
+            string codigoF = gerarCodigo();
+            string insertWalletS = 
+                "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"Carteira Agresiva\", \"" +
+                codigoF + "\", \"Agressivo\", \"842.259.180-41\")";
+            db->exec(insertWalletS, resultSql, "Erro ao inserir a carteira: ");
+
+            for(int i = 0; i < 4; i++){
+                string codigoF = gerarCodigo();
+                string insertWalletS = 
+                    "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"" + to_string(i) + "\", \"" +
+                    codigoF + "\", \"Agressivo\", \"842.259.180-41\")";
+                db->exec(insertWalletS, resultSql, "Erro ao inserir a carteira: ");
+            }
+
+            // Roda o teste
+            vector<Carteira> a;
+            try {
+                a = ctrAccount.listWallets();
+            } catch (runtime_error &x) {
+                out = x.what();
+                result = ResultFail();
+
+                // Limpa os Dados;
+                db->exec(
+                    "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\";",
+                    resultSql,
+                    "Erro ao limpar os dados do teste: "
+                );
+                delete contexto;
+                delete resultSql;
+                return ;
+            };
+            
+            out = "vector<Carteira>";
+            result = ResultPass();
+            
+            // Verfica os dados das carteiras
+
+            Carteira carteiraResult = a[0];
+            if(
+                carteiraResult.getNome().getValor() != nome.getValor() or
+                carteiraResult.getTipoPerfil().getValor() != perfil.getValor()
+            ) {
+                result = ResultFail();
+                out = "vector<Carteira>, but incorret data";
+                
+                // Limpa os Dados;
+                db->exec(
+                    "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\";",
+                    resultSql,
+                    "Erro ao limpar os dados do teste: "
+                );
+                delete contexto;
+                delete resultSql;
+                return ;
+            }
+
+            for(int i = 1; i < 5; i++){
+                carteiraResult = a[i];
+
+                if (carteiraResult.getTipoPerfil().getValor() != perfil.getValor()){
+                    result = ResultFail();
+                    out = "vector<Carteira>, but incorret data";
+                    break;
+                }
+            }
+            // Limpa os Dados;
+            db->exec(
+                "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\";",
+                resultSql,
+                "Erro ao limpar os dados do teste: "
+            );
+            delete contexto;
+            delete resultSql;
         }
 };

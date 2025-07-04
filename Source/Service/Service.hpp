@@ -345,20 +345,16 @@ public:
 // Cria e valida os codigos das carteiras.
 
 inline bool invalidCodigo(string codigo){
-    Tabela result;
-    char *errorMsg;
+    Tabela *result = new Tabela();
+    DB *db = DB::getInstance();
 
     string findCodigoS = "SELECT CODIGO FROM Carteiras WHERE CODIGO = \"" + codigo + "\";";
-    const char *findCodigo = findCodigoS.c_str();
-
-    bool excResult = sqlite3_exec(DB::getInstance()->getDB(), findCodigo, callback, &result, &errorMsg);
-    // Retorna erro caso o SQLite falhe.
-    if(excResult != SQLITE_OK){
-        string sqlError = errorMsg ? string(errorMsg) : "Erro desconhecido.";
-        sqlite3_free(errorMsg);
-        throw runtime_error("Erro ao procurar a carteira: " + sqlError);
-    }
-    if(result.size() > 0) return true;
+    db->exec(findCodigoS, result, "Erro ao procurar a carteira: ");
+    
+    bool resultInBool = result->size() > 0;
+    delete result;
+    
+    if(resultInBool) return true;
     return false;
 }
 
