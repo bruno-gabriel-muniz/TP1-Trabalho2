@@ -27,4 +27,6 @@ int main(){
     cout << "\n\n";
     TestListWallet().run();
     TestListWalletEmpty().run();
+    cout << "\n\n";
+    TestChangeSenha().run();
 }

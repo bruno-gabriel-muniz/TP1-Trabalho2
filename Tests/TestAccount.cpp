@@ -558,11 +558,6 @@ class TestListWalletEmpty : public Test{
 
             contexto->setUser(user);
 
-            TipoPerfil perfil;
-            Nome nome;
-            perfil.setValor("Agressivo");
-            nome.setValor("Carteira Moderada");
-
             // Roda o teste
             vector<Carteira> a;
             try {
@@ -585,6 +580,84 @@ class TestListWalletEmpty : public Test{
                 result = ResultPass();
                 out = "vector<Carteira> (empty)";
             }
+
+            // Limpa os Dados;
+            delete contexto;
+            delete resultSql;
+        }
+};
+
+
+
+class TestChangeSenha : public Test{
+    public:
+        void exec(){
+            // Define os dados do Teste.
+            nameTest = "Test->AccountCommandChangeSenha";
+            typeTest = ValidArgument();
+            in = "Senha: Ef1*gh";
+            expected = "void";
+
+            // Cria as variáveis do teste
+            DB *db = DB::getInstance(); // DB sqlite
+            Tabela *resultSql = new Tabela(); // Result query sql
+
+            CtrState *contexto = new CtrState();
+            AccountSer ctrAccount = AccountSer(contexto);
+            Conta *user = new Conta();
+
+            Ncpf cpf;
+            Senha senha;
+            Nome nomeUser;
+
+            cpf.setValor("842.259.180-41");
+            senha.setValor("B1g#ji");
+            nomeUser.setValor("Ze de Fulano");
+
+            user->setNcpf(cpf);
+            user->setSenha(senha);
+            user->setNome(nomeUser);
+
+            contexto->setUser(user);
+
+            Senha novaSenha;
+            novaSenha.setValor("Ef1#gh");
+
+            db->exec(
+                "INSERT INTO Contas (NOME, CPF, SENHA) VALUES (\"Ze de Fulano\", \"842.259.180-41\", \"B1g#ji\")",
+                resultSql,
+                "Erro ao inserir a conta de teste: "
+            );
+
+            // Roda o teste
+            try {
+                ctrAccount.changeSenha(novaSenha);
+            } catch (runtime_error &x) {
+                out = x.what();
+                result = ResultFail();
+
+                // Limpa os Dados;
+                db->exec(
+                    "DELETE FROM Contas WHERE CPF = \"" + cpf.getValor() + "\"",
+                    resultSql,
+                    "Erro ao inserir a conta de teste: "
+                );
+                delete contexto;
+                delete resultSql;
+                return ;
+            };
+            
+            result = ResultPass();
+            out = "void, but incorret data.";
+
+            db->exec(
+                "SELECT SENHA FROM Contas WHERE CPF = \"" + cpf.getValor() + "\";",
+                resultSql,
+                "Erro ao procurar a nova senha: "
+            );
+
+            if(resultSql[0][0]["SENHA"] != novaSenha.getValor()) result = ResultFail();
+            else out = "void";
 
             // Limpa os Dados;
             db->exec(
