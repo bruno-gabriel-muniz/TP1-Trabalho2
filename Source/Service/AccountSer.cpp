@@ -3,17 +3,17 @@
 PresentationInte* AccountCommandManageWallet::execute(Nome nome){
     // Inicia os dados do DB.
     DB *db = DB::getInstance();
-    Tabela *result = new Tabela();
+    Tabela *resultSql = new Tabela();
     char *errorMsg = nullptr;
     Ncpf cpf = contexto->getUser()->getNcpf();
     // Procura as carteiras na tabela de carteiras.
     string findWalletS = "SELECT NOME, CODIGO, PERFIL, CPF FROM Carteiras WHERE CPF = \"" + cpf.getValor() +
                         "\" AND NOME = \"" + nome.getValor() +"\"";
     
-    db->exec(findWalletS, result, "Erro ao procurar a carteira: ");
+    db->exec(findWalletS, resultSql, "Erro ao procurar a carteira: ");
     // Retorna erro caso a carteira em questão não exista.
-    if(result->size() == 0) throw runtime_error("Erro: carteira não encontrada.");
-    else if (result->size() > 1) throw runtime_error("Erro: carteiras conflitantes.");
+    if(resultSql->size() == 0) throw runtime_error("Erro: carteira não encontrada.");
+    else if (resultSql->size() > 1) throw runtime_error("Erro: carteiras conflitantes.");
 
     // Atualiza os dados
     Codigo codigo;
@@ -21,8 +21,8 @@ PresentationInte* AccountCommandManageWallet::execute(Nome nome){
     Carteira *carteira = new Carteira();
 
 
-    codigo.setValor(result[0][0]["CODIGO"]);
-    perfil.setValor(result[0][0]["PERFIL"]);
+    codigo.setValor(resultSql[0][0]["CODIGO"]);
+    perfil.setValor(resultSql[0][0]["PERFIL"]);
 
     carteira->setNome(nome);
     carteira->setCodigo(codigo);
@@ -37,17 +37,17 @@ PresentationInte* AccountCommandManageWallet::execute(Nome nome){
 void AccountCommandMakeWallet::execute(Nome nome, TipoPerfil perfil){
     // Inicia os dados do DB.
     DB *db = DB::getInstance();
-    Tabela *result = new Tabela();
+    Tabela *resultSql = new Tabela();
     char *errorMsg = nullptr;
     Ncpf cpf = contexto->getUser()->getNcpf();
 
     // Procura as carteiras na tabela de carteiras.
     string findWalletS = "SELECT NOME, CPF FROM Carteiras WHERE CPF = \"" + cpf.getValor() + "\";";
-    db->exec(findWalletS, result, "Erro ao procurar a carteira: ");
+    db->exec(findWalletS, resultSql, "Erro ao procurar a carteira: ");
     
     // Retorna erro caso o limite de carteiras tenha sido atingido.
-    if(result->size() >= 5) throw runtime_error("Erro: limite de Carteiras atingido.");
-    for(Linha &linha : result[0]){
+    if(resultSql->size() >= 5) throw runtime_error("Erro: limite de Carteiras atingido.");
+    for(Linha &linha : resultSql[0]){
         if(linha["NOME"] == nome.getValor()) throw runtime_error("Erro: outra carteira já possui esse nome.");
     }
 
@@ -59,7 +59,7 @@ void AccountCommandMakeWallet::execute(Nome nome, TipoPerfil perfil){
                             nome.getValor() + "\", \"" + codigo.getValor() + "\", \"" + perfil.getValor() +
                             "\", \"" + cpf.getValor() +
                             "\")";
-    db->exec(insertWalletS, result, "Erro ao inserir a carteira: ");
+    db->exec(insertWalletS, resultSql, "Erro ao inserir a carteira: ");
 }
 
 // TODO: 
@@ -67,10 +67,40 @@ void AccountCommandRemoveWallet::execute(Nome nome){
     return;
 }
 
-// TODO:
 vector<Carteira> AccountCommandListWallets::execute(){
-    vector<Carteira> a;
-    return a;
+    // Configura os dados do DB;
+    DB *db = DB::getInstance();
+    Tabela *resultSql;
+
+    // Procura as carteiras no DB;
+    db->exec(
+        "SELECT NOME, CODIGO, PERFIL FROM Carteiras WHERE CPF = \""
+        + contexto->getUser()->getNcpf().getValor() + "\";",
+        resultSql,
+        "Erro ao procurar as carteiras da conta: "
+    );
+    
+    // Formata a saída.
+    vector<Carteira> result;
+
+    for(Linha a : resultSql[0]){
+        Carteira carteira = Carteira();
+        Nome nome = Nome();
+        Codigo codigo = Codigo();
+        TipoPerfil perfil = TipoPerfil();
+
+        nome.setValor(a["NOME"]);
+        codigo.setValor(a["CODIGO"]);
+        perfil.setValor(a["PERFIL"]);
+        
+        carteira.setNome(nome);
+        carteira.setCodigo(codigo);
+        carteira.setTipoPerfil(perfil);
+
+        result.push_back(carteira);
+    }
+    
+    return result;
 }
 
 // TODO:
