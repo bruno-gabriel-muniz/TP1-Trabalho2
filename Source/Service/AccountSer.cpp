@@ -106,7 +106,22 @@ vector<Carteira> AccountCommandListWallets::execute(){
 }
 
 // TODO:
-void AccountCommandChangeSenha::execute(Senha){
+void AccountCommandChangeSenha::execute(Senha senha){
+    // Dados do DB;
+    DB *db = DB::getInstance();
+    Tabela *resultSql = new Tabela();
+
+    Ncpf cpfUser = contexto->getUser()->getNcpf();
+
+    // Altera a senha no DB.
+    db->exec(
+        "UPDATE Contas SET SENHA = \"" + senha.getValor() +
+        "\" WHERE CPF = \"" + cpfUser.getValor() + 
+        "\";",
+        resultSql,
+        "Erro ao Atualizar a senha no DB: "
+    );
+
     return;
 }
 
