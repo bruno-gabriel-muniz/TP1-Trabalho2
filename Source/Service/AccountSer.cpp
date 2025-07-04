@@ -124,7 +124,6 @@ void AccountCommandChangeSenha::execute(Senha senha){
     return;
 }
 
-// TODO:
 void AccountCommandChangeName::execute(Nome nome){
     // Dados do DB;
     DB *db = DB::getInstance();
@@ -146,6 +145,21 @@ void AccountCommandChangeName::execute(Nome nome){
 
 // TODO:
 PresentationInte* AccountCommandRemoveAccount::execute(){
+    // Inicia os dados do DB;
+    DB *db = DB::getInstance();
+    Tabela *resultSql = new Tabela();
+
+    // Remove a conta do DB;
+    db->exec(
+        "DELETE FROM Contas WHERE CPF = \"" +
+        contexto->getUser()->getNcpf().getValor() +
+        "\";",
+        resultSql,
+        "Erro ao deletar o Usuário do DB: "
+    );
+
+    contexto->setUser(nullptr);
+    contexto->setCarteira(nullptr);
     return new AuthenticationPre(contexto);
 }
 
