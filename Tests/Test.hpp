@@ -70,8 +70,8 @@ inline void Test::show(){
     cout << nameTest << "\nTypeTest: " << typeTest.show() << ":\n\n";
     // Dados do teste
     cout << "In: " << in
-         << " | Expected: " << expected
-         << " | Out: " << out << "\n\n";
+         << "\nExpected: " << expected
+         << "\nOut: " << out << "\n\n";
     // Resultado do teste
     cout << result.show() << "\n";
     cout << "\n"; 

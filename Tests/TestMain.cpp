@@ -31,4 +31,6 @@ int main(){
     TestChangeSenha().run();
     cout << "\n\n";
     TestChangeNome().run();
+    cout << "\n\n";
+    TestRemoveAccount().run();
 }
