@@ -766,7 +766,7 @@ class TestRemoveAccount : public Test{
             nameTest = "Test->AccountCommandRemoveAccount";
             typeTest = ValidArgument();
             in = "void";
-            expected = "void";
+            expected = "PresentationInte*";
 
             // Configura variaveis do teste;
             DB *db = DB::getInstance(); // DB sqlite
@@ -836,5 +836,60 @@ class TestRemoveAccount : public Test{
             // Limpa os dados;
             delete contexto;
             delete resultSql;
+        }
+};
+
+
+
+class TestLogOut : public Test{
+    public:
+        void exec(){
+            // Define os dados do Teste.
+            nameTest = "Test->AccountCommandLogOut";
+            typeTest = ValidArgument();
+            in = "void";
+            expected = "PresentationInte*";
+
+            // Configura variaveis do teste;
+            CtrState *contexto = new CtrState();
+            AccountSer ctrAccount = AccountSer(contexto);
+            Conta *user = new Conta();
+
+            Ncpf cpf;
+            Senha senha;
+            Nome nomeUser;
+
+            cpf.setValor("842.259.180-41");
+            senha.setValor("B1g#ji");
+            nomeUser.setValor("Ze de Fulano");
+
+            user->setNcpf(cpf);
+            user->setSenha(senha);
+            user->setNome(nomeUser);
+
+            contexto->setUser(user);
+
+            // Roda o teste;
+            try{
+
+            } catch (runtime_error &x){
+                out = x.what();
+                result = ResultFail();
+
+                // Limpa os dados do teste;
+                delete contexto;
+                return ;
+            }
+
+            result = ResultPass();
+            out = "PresentationInte*, but incorret data.";
+
+            if(
+                contexto->getUser() != nullptr or
+                contexto->getCarteira() != nullptr
+            ) result = ResultFail();
+            else out = "PresentationInte*";
+
+            delete contexto;
         }
 };

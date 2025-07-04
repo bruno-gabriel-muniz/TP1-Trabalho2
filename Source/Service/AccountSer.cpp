@@ -163,8 +163,9 @@ PresentationInte* AccountCommandRemoveAccount::execute(){
     return new AuthenticationPre(contexto);
 }
 
-// TODO:
 PresentationInte* AccountCommandLogOut::execute(){
+    contexto->setUser(nullptr);
+    contexto->setCarteira(nullptr);
     return new AuthenticationPre(contexto);
 }
 
