@@ -105,7 +105,6 @@ vector<Carteira> AccountCommandListWallets::execute(){
     return result;
 }
 
-// TODO:
 void AccountCommandChangeSenha::execute(Senha senha){
     // Dados do DB;
     DB *db = DB::getInstance();
@@ -126,7 +125,22 @@ void AccountCommandChangeSenha::execute(Senha senha){
 }
 
 // TODO:
-void AccountCommandChangeName::execute(Nome){
+void AccountCommandChangeName::execute(Nome nome){
+    // Dados do DB;
+    DB *db = DB::getInstance();
+    Tabela *resultSql = new Tabela();
+
+    Ncpf cpfUser = contexto->getUser()->getNcpf();
+
+    // Altera o nome no DB.
+    db->exec(
+        "UPDATE Contas SET NOME = \"" + nome.getValor() +
+        "\" WHERE CPF = \"" + cpfUser.getValor() + 
+        "\";",
+        resultSql,
+        "Erro ao Atualizar o nome no DB: "
+    );
+
     return;
 }
 
