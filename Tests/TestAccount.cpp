@@ -526,3 +526,73 @@ class TestListWallet : public Test{
             delete resultSql;
         }
 };
+
+class TestListWalletEmpty : public Test{
+    public:
+        void exec(){
+            // Define os dados do Teste.
+            nameTest = "Teste->AccountCommandListWallet (Sem Carteiras)";
+            typeTest = ValidArgument();
+            in = "void";
+            expected = "vector<Carteira> (empty)";
+
+            // Cria as variáveis do teste
+            DB *db = DB::getInstance(); // DB sqlite
+            Tabela *resultSql = new Tabela(); // Result query sql
+
+            CtrState *contexto = new CtrState();
+            AccountSer ctrAccount = AccountSer(contexto);
+            Conta *user = new Conta();
+
+            Ncpf cpf;
+            Senha senha;
+            Nome nomeUser;
+
+            cpf.setValor("842.259.180-41");
+            senha.setValor("B1g#ji");
+            nomeUser.setValor("Ze de Fulano");
+
+            user->setNcpf(cpf);
+            user->setSenha(senha);
+            user->setNome(nomeUser);
+
+            contexto->setUser(user);
+
+            TipoPerfil perfil;
+            Nome nome;
+            perfil.setValor("Agressivo");
+            nome.setValor("Carteira Moderada");
+
+            // Roda o teste
+            vector<Carteira> a;
+            try {
+                a = ctrAccount.listWallets();
+            } catch (runtime_error &x) {
+                out = x.what();
+                result = ResultFail();
+
+                // Limpa os Dados;
+                delete contexto;
+                delete resultSql;
+                return ;
+            };
+            
+            // Verifica os dados;
+            if(resultSql->size() != 0) {
+                result = ResultFail();
+                out = "vector<Carteira> (not empty)";
+            } else {
+                result = ResultPass();
+                out = "vector<Carteira> (empty)";
+            }
+
+            // Limpa os Dados;
+            db->exec(
+                "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\";",
+                resultSql,
+                "Erro ao limpar os dados do teste: "
+            );
+            delete contexto;
+            delete resultSql;
+        }
+};
