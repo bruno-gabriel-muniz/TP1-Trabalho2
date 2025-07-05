@@ -38,4 +38,6 @@ int main(){
     cout << "\t\t\t\t\t__Investment__";
     cout << "\n\n";
     TestMakeOrder().run();
+    cout << "\n\n";
+    TestRemoveOrder().run();
 }
