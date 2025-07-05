@@ -1,6 +1,10 @@
+#Dados historicos
+DADOS_HISTORICOS.txt
+
 #Db
 *.sqbpro
 *.sqlite
+*.sqlite-journal
 
 #CodeBlocks
 TP1-Trabalho2.cbp
@@ -56,6 +60,8 @@ TP1-Trabalho2.layout
 *.lib
 
 # Executables
+clearDbTest
+updateData
 test
 main
 *.exe

@@ -83,24 +83,19 @@ DB* DB::instance = nullptr;
 class Inicializador {
 public:
     Inicializador() {
-        DB *Db = DB::getInstance();
-        char *errorMsg = nullptr;
+        DB *db = DB::getInstance();
         
         // Cria a tabela de contas
-        const char *createContas = "CREATE TABLE IF NOT EXISTS \"Contas\" ("
+        string createContas = "CREATE TABLE IF NOT EXISTS \"Contas\" ("
             "\"NOME\"	TEXT NOT NULL,"
             "\"CPF\"	TEXT NOT NULL UNIQUE,"
             "\"SENHA\"	TEXT NOT NULL,"
             "PRIMARY KEY(\"CPF\")"
         ")";
-        bool result = sqlite3_exec(Db->getDB(), createContas, nullptr, 0, &errorMsg);
-        if(result != SQLITE_OK){
-            cerr << "Erro ao criar tabela de contas: " << errorMsg << "\n";
-            sqlite3_free(errorMsg);
-        }
+        db->exec(createContas, nullptr, "Erro ao criar tabela de contas: ");
         
         // Cria a tabale de carteiras
-        const char *createCarteiras = "CREATE TABLE IF NOT EXISTS \"Carteiras\" ("
+        string createCarteiras = "CREATE TABLE IF NOT EXISTS \"Carteiras\" ("
             "\"NOME\"	TEXT NOT NULL,"
             "\"CODIGO\"	TEXT NOT NULL,"
             "\"PERFIL\"	TEXT NOT NULL,"
@@ -108,14 +103,10 @@ public:
             "PRIMARY KEY(\"CODIGO\"),"
             "FOREIGN KEY(\"CPF\") REFERENCES \"Contas\"(\"CPF\")"
         ")";
-        result = sqlite3_exec(Db->getDB(), createCarteiras, nullptr, 0, &errorMsg);
-        if(result != SQLITE_OK){
-            cerr << "Erro ao criar tabela de carteiras: " << errorMsg << "\n";
-            sqlite3_free(errorMsg);
-        }
+        db->exec(createCarteiras, nullptr, "Erro ao criar tabela de carteiras: ");
 
         // Criar a tabela de ordens
-        const char *createOrdens = "CREATE TABLE IF NOT EXISTS \"Ordens\" ("
+        string createOrdens = "CREATE TABLE IF NOT EXISTS \"Ordens\" ("
             "\"CODIGO\"	TEXT NOT NULL,"
             "\"CODIGO NEG\"	TEXT NOT NULL,"
             "\"DATA\"	TEXT NOT NULL,"
@@ -124,11 +115,15 @@ public:
             "FOREIGN KEY(\"CODIGO\") REFERENCES \"Carteiras\"(\"CODIGO\"),"
 	        "PRIMARY KEY(\"CODIGO NEG\")"
         ")";
-        result = sqlite3_exec(Db->getDB(), createOrdens, nullptr, 0, &errorMsg);
-        if(result != SQLITE_OK){
-            cerr << "Erro ao criar tabela de ordens: " << errorMsg << "\n";
-            sqlite3_free(errorMsg);
-        }
+        db->exec(createOrdens, nullptr, "Erro ao criar tabela de ordens: ");
+
+        // Criar a tabela dos dados históricos
+        string createDadosHistoricos = "CREATE TABLE IF NOT EXISTS DadosHistoricos ("
+            "\"CODIGO NEG\"	TEXT NOT NULL,"
+            "\"DATA\"	TEXT NOT NULL,"
+            "\"PRECO\"	TEXT NOT NULL"
+        ")";
+        db->exec(createDadosHistoricos, nullptr, "Erro ao criar tabela de ordens: ");
     }
 };
 

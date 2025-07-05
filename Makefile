@@ -1,22 +1,13 @@
-# Diretórios e nomes de binários
-BUILD_DIR = Build
-EXEC     = tp1
-TEST     = test_app
+clear:
+	rm -rf clearDbTest updateData test
 
-.PHONY: build test run clean
+test: clear
+	g++ -I. Tests/TestMain.cpp Source/Libs/dominios.cpp -o test -lsqlite3 && ./test
 
-build:
-	mkdir -p $(BUILD_DIR)
-	cd $(BUILD_DIR) && cmake .. && make
+updateData: clear
+	g++ -I. Source/UpdateDadosHistoricos.cpp Source/Libs/dominios.cpp -o updateData -lsqlite3 && ./updateData
 
-run: build
-	./$(BUILD_DIR)/$(EXEC)
-
-test: build
-	./$(BUILD_DIR)/$(TEST)
-
-clean:
-	rm -rf $(BUILD_DIR)
-
+clearDbTest: clear
+	g++ -I. Tests/ClearDbTest.cpp Source/Libs/dominios.cpp -o clearDbTest -lsqlite3 && ./clearDbTest
 docs:
 	doxygen Doxyfile
