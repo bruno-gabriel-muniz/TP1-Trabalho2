@@ -6,7 +6,7 @@ class TestMakeOrder : public Test{
         void exec(){
             // Define os dados do Teste.
             nameTest = "Teste->InvestmentCommandMakeOrder";
-            typeTest = InvalidArgument();
+            typeTest = ValidArgument();
             in = "codNeg: 'SAPR11F     ' / Data: 20250110 / Quantidade: 2";
             expected = "void";
 
@@ -97,7 +97,7 @@ class TestRemoveOrder : public Test{
         void exec(){
             // Define os dados do Teste.
             nameTest = "Teste->InvestmentCommandRemoveOrder";
-            typeTest = InvalidArgument();
+            typeTest = ValidArgument();
             in = "codNeg: 'SAPR11F     '";
             expected = "void";
 
@@ -200,7 +200,7 @@ class TestListOrders : public Test{
         void exec(){
             // Define os dados do Teste.
             nameTest = "Teste->InvestmentCommandListOrders";
-            typeTest = InvalidArgument();
+            typeTest = ValidArgument();
             in = "void";
             expected = "vector<Ordem>";
 
@@ -290,9 +290,107 @@ class TestListOrders : public Test{
             else out = "vector<Ordem>";
             
             // Limpa os dados;
-                db->exec("DELETE FROM Ordens;", resultSql, "Erro ao limpar os dados: ");
+            db->exec("DELETE FROM Ordens;", resultSql, "Erro ao limpar os dados: ");
+            delete resultSql;
+            delete contexto;
+            return ;
+        }
+};
+
+class TestEdidWallet : public Test{
+    public:
+        void exec(){
+            // Define os dados do Teste.
+            nameTest = "Teste->InvestmentCommandEditWallet";
+            typeTest = ValidArgument();
+            in = "nome: Conta Emergencia / perfil: Conservador";
+            expected = "void";
+
+            // Cria as variáveis do teste
+            DB *db = DB::getInstance(); // DB sqlite
+            Tabela *resultSql = new Tabela(); // Result query sql
+
+            // Organiza as variáveis do teste;
+            CtrState *contexto = new CtrState();
+            InvestmentSer ctrInvestment = InvestmentSer(contexto);
+
+            Conta *user = new Conta();
+            Carteira *carteira = new Carteira();
+
+            Ncpf cpf;
+            Senha senha;
+            Nome nomeUser;
+
+            Nome nomeCarteira;
+            TipoPerfil perfil;
+            Codigo codigo;
+
+            cpf.setValor("842.259.180-41");
+            senha.setValor("B1g#ji");
+            nomeUser.setValor("Ze de Fulano");
+
+            nomeCarteira.setValor("Conta Rendimento");
+            perfil.setValor("Moderado");
+            codigo.setValor(gerarCodigo());
+
+            user->setNcpf(cpf);
+            user->setSenha(senha);
+            user->setNome(nomeUser);
+
+            carteira->setNome(nomeCarteira);
+            carteira->setTipoPerfil(perfil);
+            carteira->setCodigo(codigo);
+
+            contexto->setUser(user);
+            contexto->setCarteira(carteira);
+
+            Nome novoNome;
+            TipoPerfil novoPerfil;
+            
+            novoNome.setValor("Conta Emergencia");
+            novoPerfil.setValor("Conservador");
+
+            // Configura os dados no DB
+            string insertWalletS = 
+                "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"Conta Rendimento\", \"" +
+                codigo.getValor() + "\", \"Moderado\", \"842.259.180-41\")";
+            db->exec(insertWalletS, resultSql, "Erro ao inserir a carteira: ");
+
+            // Executando o teste
+            try{
+                ctrInvestment.editWallet(&novoNome, &novoPerfil);
+            } catch (runtime_error &x){
+                out = x.what();
+                result = ResultFail();
+
+                // Limpa os dados;
+                db->exec("DELETE FROM Carteiras;", resultSql, "Erro ao limpar os dados: ");
                 delete resultSql;
                 delete contexto;
                 return ;
+            }
+
+            // Valida os dados;
+            result = ResultPass();
+            out = "void, but incorret data.";
+
+            db->exec(
+                "SELECT * FROM Carteiras WHERE NOME = \"Conta Emergencia\" AND PERFIL = \"Conservador\";",
+                resultSql,
+                "Erro ao validar as alterações no DB: "
+            );
+
+            if(
+                contexto->getCarteira()->getNome().getValor() != "Conta Emergencia" or
+                contexto->getCarteira()->getTipoPerfil().getValor() != "Conservador" or
+                resultSql->size() != 1
+            ) result = ResultFail();
+            else out = "void";
+
+            // Limpa os dados;
+            db->exec("DELETE FROM Carteiras;", resultSql, "Erro ao limpar os dados: ");
+            delete resultSql;
+            delete contexto;
+            return ;
         }
 };

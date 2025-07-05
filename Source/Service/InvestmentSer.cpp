@@ -119,7 +119,6 @@ vector<Ordem> InvestmentCommandListOrders::execute(){
     return out;
 }
 
-// TODO:
 void InvestmentCommandEditWallet::execute(Nome* nome, TipoPerfil* perfil){
     // Inicia o DB
     DB *db = DB::getInstance();
@@ -143,7 +142,7 @@ void InvestmentCommandEditWallet::execute(Nome* nome, TipoPerfil* perfil){
         // Atualiza o contexto e o DB;
         contexto->getCarteira()->setNome(*nome);
         db->exec(
-           "UPDATE TABLE Carteiras SET NOME = \"" +
+           "UPDATE Carteiras SET NOME = \"" +
            nome->getValor() + "\" WHERE CODIGO = " +
            contexto->getCarteira()->getCodigo().getValor() +
            ";",
@@ -156,7 +155,7 @@ void InvestmentCommandEditWallet::execute(Nome* nome, TipoPerfil* perfil){
         // Atualiza o contexto e o DB;
         contexto->getCarteira()->setTipoPerfil(*perfil);
         db->exec(
-           "UPDATE TABLE Carteiras SET PERFIL = \"" +
+           "UPDATE Carteiras SET PERFIL = \"" +
            perfil->getValor() + "\" WHERE CODIGO = " +
            contexto->getCarteira()->getCodigo().getValor() +
            ";",

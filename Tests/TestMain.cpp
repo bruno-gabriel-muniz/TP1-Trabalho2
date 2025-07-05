@@ -42,4 +42,6 @@ int main(){
     TestRemoveOrder().run();
     cout << "\n\n";
     TestListOrders().run();
+    cout << "\n\n";
+    TestEdidWallet().run();
 }
