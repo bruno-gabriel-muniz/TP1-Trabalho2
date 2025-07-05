@@ -194,3 +194,105 @@ class TestRemoveOrder : public Test{
             return ;
         }
 };
+
+class TestListOrders : public Test{
+    public:
+        void exec(){
+            // Define os dados do Teste.
+            nameTest = "Teste->InvestmentCommandListOrders";
+            typeTest = InvalidArgument();
+            in = "void";
+            expected = "vector<Ordem>";
+
+            // Cria as variáveis do teste
+            DB *db = DB::getInstance(); // DB sqlite
+            Tabela *resultSql = new Tabela(); // Result query sql
+
+            // Organiza as variáveis do teste;
+            CtrState *contexto = new CtrState();
+            InvestmentSer ctrInvestment = InvestmentSer(contexto);
+
+            Conta *user = new Conta();
+            Carteira *carteira = new Carteira();
+
+            Ncpf cpf;
+            Senha senha;
+            Nome nomeUser;
+
+            Nome nomeCarteira;
+            TipoPerfil perfil;
+            Codigo codigo;
+
+            cpf.setValor("842.259.180-41");
+            senha.setValor("B1g#ji");
+            nomeUser.setValor("Ze de Fulano");
+
+            nomeCarteira.setValor("Conservadora");
+            perfil.setValor("Conservador");
+            codigo.setValor(gerarCodigo());
+
+            user->setNcpf(cpf);
+            user->setSenha(senha);
+            user->setNome(nomeUser);
+
+            carteira->setNome(nomeCarteira);
+            carteira->setTipoPerfil(perfil);
+            carteira->setCodigo(codigo);
+
+            contexto->setUser(user);
+            contexto->setCarteira(carteira);
+
+            // Configura os valores de teste no DB;
+
+            string makeOrder =
+                "INSERT INTO Ordens (CODIGO, \"CODIGO NEG\", DATA, PRECO, QUANTIDADE) VALUES (\"" +
+                carteira->getCodigo().getValor() +
+                "\", \"HYPE3       \", \"20250102\", \"2585\", \"3\")";
+            db->exec(makeOrder, resultSql, "Erro ao adicionar a ordem controle no DB: ");
+
+            makeOrder =
+                "INSERT INTO Ordens (CODIGO, \"CODIGO NEG\", DATA, PRECO, QUANTIDADE) VALUES (\"" +
+                carteira->getCodigo().getValor() +
+                "\", \"HYPE3 TESTE \", \"20250102\", \"42585\", \"3\")";
+            db->exec(makeOrder, resultSql, "Erro ao adicionar a ordem controle no DB: ");
+
+            makeOrder =
+                "INSERT INTO Ordens (CODIGO, \"CODIGO NEG\", DATA, PRECO, QUANTIDADE) VALUES (\"" +
+                carteira->getCodigo().getValor() +
+                "\", \"HYPE3 TESTE1\", \"20250105\", \"192585\", \"3\")";
+            db->exec(makeOrder, resultSql, "Erro ao adicionar a ordem controle no DB: ");
+
+            vector<Ordem> listOrdens;
+
+            try{
+                listOrdens = ctrInvestment.listOrders();
+            } catch(runtime_error &x){
+                out = x.what();
+                result = ResultFail();
+
+                // Limpa os dados;
+                db->exec("DELETE FROM Ordens;", resultSql, "Erro ao limpar os dados: ");
+                delete resultSql;
+                delete contexto;
+                return ;
+            }
+            
+            // Verifica os dados;
+            result = ResultPass();
+            out = "vector<Ordem>, but incorret data";
+
+            if(
+                listOrdens[0].getDinheiro().getValor() != "25,85" or
+                listOrdens[1].getCodigoNeg().getValor() != "HYPE3 TESTE " or
+                listOrdens[2].getData().getValor() != "20250105" or
+                listOrdens[2].getDinheiro().getValor() != "1.925,85"
+            ) result = ResultFail();
+            else out = "vector<Ordem>";
+            
+            // Limpa os dados;
+                db->exec("DELETE FROM Ordens;", resultSql, "Erro ao limpar os dados: ");
+                delete resultSql;
+                delete contexto;
+                return ;
+        }
+};

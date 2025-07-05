@@ -40,4 +40,6 @@ int main(){
     TestMakeOrder().run();
     cout << "\n\n";
     TestRemoveOrder().run();
+    cout << "\n\n";
+    TestListOrders().run();
 }
