@@ -7,6 +7,20 @@ void InvestmentCommandCancelOrder::execute(CodigoNeg codNeg){
 
 // TODO:
 void InvestmentCommandRemoveOrder::execute(CodigoNeg codNeg){
+    // Inicia o DB;
+    DB *db = DB::getInstance();
+    Tabela *resultSql = new Tabela();
+
+    // Dados do contexto
+    Carteira *userCarteira = contexto->getCarteira();
+
+    // Deleta a ordem do Usuário;
+    string deleteOrder =
+        "DELETE FROM Ordens WHERE CODIGO = \"" +
+        userCarteira->getCodigo().getValor() + "\" AND \"CODIGO NEG\" = \"" +
+        codNeg.getValor() + "\";";
+    
+    db->exec(deleteOrder, resultSql, "Erro ao remover a ordem no DB: ");
     return ;
 }
 
