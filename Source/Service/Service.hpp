@@ -309,20 +309,6 @@ public:
     void execute(CodigoNeg codNeg);
 };
 
-/**
- * @class InvestmentCommandCancelOrder
- * @ingroup ComandosService
- * @brief Cancela uma ordem da carteira, caso ainda esteja no prazo.
- */
-class InvestmentCommandCancelOrder : public Command {
-public:
-    InvestmentCommandCancelOrder(CtrState *ctx) : Command(ctx) {}
-
-    /**
-     * @brief Executa o comando de cancelamento de ordem.
-     */
-    void execute(CodigoNeg codNeg);
-};
 
 /**
  * @class InvestmentSer
@@ -334,16 +320,13 @@ private:
     InvestmentCommandListOrders cmdListOrders;
     InvestmentCommandMakeOrder cmdMakeOrder;
     InvestmentCommandRemoveOrder cmdRemoveOrder;
-    InvestmentCommandCancelOrder cmdCancelOrder;
 
 public:
     InvestmentSer(CtrState *ctx) :
                 cmdEditWallet(ctx), cmdListOrders(ctx),
-                cmdMakeOrder(ctx), cmdRemoveOrder(ctx),
-                cmdCancelOrder(ctx)
+                cmdMakeOrder(ctx), cmdRemoveOrder(ctx)
     {context = ctx;};
 
-    void cancelOrder(CodigoNeg codNeg);
     void removeOrder(CodigoNeg codNeg);
     void makeOrder(CodigoNeg codNeg, Quantidade quantidade, Data data);
     vector<Ordem> listOrders();

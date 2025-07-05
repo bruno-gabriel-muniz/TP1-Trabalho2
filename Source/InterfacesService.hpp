@@ -152,18 +152,11 @@ public:
     virtual void makeOrder(CodigoNeg codNeg, Quantidade quantidade, Data data) = 0;
 
     /**
-     * @brief Remove uma ordem do histórico.
+     * @brief Remove uma ordem da carteira.
      * @param codNeg Código da negociação a ser removida.
      * @throws std::runtime_error Caso ocorra falha na operação.
      */
     virtual void removeOrder(CodigoNeg codNeg) = 0;
-
-    /**
-     * @brief Cancela e remove uma ordem dos dados do aplicativo.
-     * @param codNeg Código da negociação a ser cancelada.
-     * @throws std::runtime_error Caso ocorra falha na operação.
-     */
-    virtual void cancelOrder(CodigoNeg codNeg) = 0;
 
     ~InvestmentServiceInte() = default;
 };

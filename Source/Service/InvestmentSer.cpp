@@ -1,11 +1,5 @@
 #include "Source/Service/Service.hpp"
 
-// TODO:
-void InvestmentCommandCancelOrder::execute(CodigoNeg codNeg){
-    return ;
-}
-
-// TODO:
 void InvestmentCommandRemoveOrder::execute(CodigoNeg codNeg){
     // Inicia o DB;
     DB *db = DB::getInstance();
@@ -64,9 +58,6 @@ void InvestmentCommandEditWallet::execute(Nome* nome, TipoPerfil* perfil){
 }
 
 
-void InvestmentSer::cancelOrder(CodigoNeg codNeg){
-    return cmdCancelOrder.execute(codNeg);
-};
 void InvestmentSer::removeOrder(CodigoNeg codNeg){
     return cmdRemoveOrder.execute(codNeg);
 };
