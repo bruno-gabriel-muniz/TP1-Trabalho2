@@ -3,6 +3,14 @@
  * @brief Arquivo que define a classe CtrState, responsável pelo controle de estado da UI.
  */
 
+
+
+/** 
+ * @defgroup CamadaControleEstado Camada do Controle do Estado
+ * @{
+ */
+
+
 #pragma once
 
 #include <iostream>
@@ -69,3 +77,5 @@ void CtrState::run(){
         request = state->run();
     }
 }
+
+/** @} */

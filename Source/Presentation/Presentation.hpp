@@ -3,6 +3,14 @@
  * @brief Define as classe que implementam a interface @ref PresentationInte "PresentationInte".
  */
 
+
+
+/** 
+ * @defgroup CamadaDeApresentação Camada de Apresentação
+ * @{
+ */
+
+
 #pragma once
 
 #include "Source/InterfacePresentation.hpp"
@@ -104,3 +112,5 @@ class InvestmentPre: public PresentationInte{
         PresentationInte* run() {return this;};
         void change(PresentationInte *request) {};
 };
+
+/** @} */

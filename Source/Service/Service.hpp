@@ -3,6 +3,12 @@
  * @brief Define as classes que implementam as interfaces de serviço: @ref InterfacesService.hpp "InterfacesService"
  */
 
+
+/** 
+ * @defgroup CamadaDeServiço Camada de Serviço
+ * @{
+ */
+
 #pragma once
 #include <cstdlib>
 
@@ -371,3 +377,5 @@ inline string gerarCodigo(){
     }
     return codigo;
 }
+
+/** @} */
