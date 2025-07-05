@@ -153,7 +153,13 @@ class TestRemoveOrder : public Test{
                 carteira->getCodigo().getValor() + "\", \"" + codNeg.getValor() + "\", \"" +
                 data.getValor() + "\", \"2585\", \"" + qtd.getValor() +
                 "\")";
-            db->exec(makeOrder, resultSql, "Erro ao adicionar a nova ordem no DB: ");
+            db->exec(makeOrder, resultSql, "Erro ao adicionar a ordem de teste no DB: ");
+
+            makeOrder =
+                "INSERT INTO Ordens (CODIGO, \"CODIGO NEG\", DATA, PRECO, QUANTIDADE) VALUES (\"" +
+                carteira->getCodigo().getValor() +
+                "\", \"HYPE3       \", \"20250102\", \"2585\", \"3\")";
+            db->exec(makeOrder, resultSql, "Erro ao adicionar a ordem controle no DB: ");
 
             // Executa o teste;
             try{
@@ -175,7 +181,10 @@ class TestRemoveOrder : public Test{
             
             db->exec("SELECT * FROM Ordens;", resultSql, "Erro ao procurar as ordens no DB: ");
 
-            if(resultSql->size() != 0) result = ResultFail();
+            if(
+                resultSql->size() != 1 or
+                resultSql[0][0]["CODIGO NEG"] != "HYPE3       "
+            ) result = ResultFail();
             else out = "void";
 
             //Limpa os dados;
