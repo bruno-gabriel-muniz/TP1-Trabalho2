@@ -165,5 +165,5 @@ public:
      */
     virtual void cancelOrder(CodigoNeg codNeg) = 0;
 
-    virtual ~InvestmentServiceInte() = default;
+    ~InvestmentServiceInte() = default;
 };

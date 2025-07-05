@@ -1,6 +1,7 @@
 #include "Tests/TestCtrState.cpp"
 #include "Tests/TestAuthenticationSer.cpp"
 #include "Tests/TestAccount.cpp"
+#include "Tests/TestInvestment.cpp"
 
 int main(){
     cout << "\n";
@@ -33,4 +34,8 @@ int main(){
     TestChangeNome().run();
     cout << "\n\n";
     TestRemoveAccount().run();
+    cout << "\n\n";
+    cout << "\t\t\t\t\t__Investment__";
+    cout << "\n\n";
+    TestMakeOrder().run();
 }

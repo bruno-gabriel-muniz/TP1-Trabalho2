@@ -10,7 +10,6 @@ void InvestmentCommandRemoveOrder::execute(CodigoNeg codNeg){
     return ;
 }
 
-// TODO:
 void InvestmentCommandMakeOrder::execute(CodigoNeg codNeg, Quantidade quantidade, Data data){
     // Inicia o DB;
     DB *db = DB::getInstance();
@@ -22,7 +21,7 @@ void InvestmentCommandMakeOrder::execute(CodigoNeg codNeg, Quantidade quantidade
     // Encontra a ordem no dados históricos;
     string findOrdem = 
         "SELECT PRECO FROM DadosHistoricos WHERE DATA = \"" +
-        data.getValor() + "\", \"CODIGO NEG\" = \"" + codNeg.getValor() + "\";";
+        data.getValor() + "\" AND \"CODIGO NEG\" = \"" + codNeg.getValor() + "\";";
     db->exec(findOrdem, resultSql, "Erro ao procurar a folha nos dados históricos: ");
 
     // Valida a ordem;
@@ -46,7 +45,7 @@ vector<Ordem> InvestmentCommandListOrders::execute(){
 }
 
 // TODO:
-void InvestmentCommandEditWallet::execute(Nome* nome = nullptr, TipoPerfil* perfil = nullptr){
+void InvestmentCommandEditWallet::execute(Nome* nome, TipoPerfil* perfil){
     return ;
 }
 
@@ -63,6 +62,6 @@ void InvestmentSer::makeOrder(CodigoNeg codNeg, Quantidade quantidade, Data data
 vector<Ordem> InvestmentSer::listOrders(){
     return cmdListOrders.execute();
 };
-void InvestmentSer::editWallet(Nome* nome = nullptr, TipoPerfil* perfil = nullptr){
+void InvestmentSer::editWallet(Nome* nome, TipoPerfil* perfil){
     return cmdEditWallet.execute(nome, perfil);
 };

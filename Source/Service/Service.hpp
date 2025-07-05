@@ -235,9 +235,7 @@ public:
                 cmdChangeName(ctx), cmdChangeSenha(ctx),
                 cmdListWallets(ctx), cmdMakeWallet(ctx),
                 cmdRemoveWallet(ctx), cmdManageWallet(ctx)
-    {
-        context = ctx;
-    };
+    {context = ctx;};
 
     PresentationInte* manageWallet(Nome nome);
     void removeWallet(Nome nome);
@@ -339,7 +337,11 @@ private:
     InvestmentCommandCancelOrder cmdCancelOrder;
 
 public:
-    InvestmentSer(CtrState *ctx);
+    InvestmentSer(CtrState *ctx) :
+                cmdEditWallet(ctx), cmdListOrders(ctx),
+                cmdMakeOrder(ctx), cmdRemoveOrder(ctx),
+                cmdCancelOrder(ctx)
+    {context = ctx;};
 
     void cancelOrder(CodigoNeg codNeg);
     void removeOrder(CodigoNeg codNeg);
