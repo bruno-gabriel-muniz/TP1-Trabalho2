@@ -1,10 +1,11 @@
 #include "Source/Service/Service.hpp"
 
+// Função para a formatação adequada para a classe dinheiro.
 string formatDinheiro(string dinheiro){
     // Dados da função;
     string out;
     int size = dinheiro.size();
-    
+
     // Valida a entrada;
     if(size > 9) throw runtime_error("Valor ultrapassa o limite permitido.");
     
@@ -70,7 +71,6 @@ void InvestmentCommandMakeOrder::execute(CodigoNeg codNeg, Quantidade quantidade
     return ;
 }
 
-// TODO:
 vector<Ordem> InvestmentCommandListOrders::execute(){
     // Inicia o DB;
     DB *db = DB::getInstance();
@@ -121,6 +121,51 @@ vector<Ordem> InvestmentCommandListOrders::execute(){
 
 // TODO:
 void InvestmentCommandEditWallet::execute(Nome* nome, TipoPerfil* perfil){
+    // Inicia o DB
+    DB *db = DB::getInstance();
+    Tabela *resultSql = new Tabela();
+    
+    if(nome){
+        // Verifica se o usuário possui outra carteira com o nome novo
+        string cpf = contexto->getUser()->getNcpf().getValor();
+        db->exec(
+            "SELECT * FROM Carteiras WHERE CPF = \"" +
+            cpf + "\" AND NOME = \"" + nome->getValor() +
+            "\";",
+            resultSql,
+            "Erro ao verificar a disponibilidade do nome: "
+        );
+        if(resultSql->size() != 0) {
+            delete resultSql;
+            throw runtime_error("Outra carteira já possui esse nome.");
+        }
+
+        // Atualiza o contexto e o DB;
+        contexto->getCarteira()->setNome(*nome);
+        db->exec(
+           "UPDATE TABLE Carteiras SET NOME = \"" +
+           nome->getValor() + "\" WHERE CODIGO = " +
+           contexto->getCarteira()->getCodigo().getValor() +
+           ";",
+            resultSql,
+            "Erro ao atualizar o nome da carteira no DB: "
+        );
+    }
+
+    if(perfil){
+        // Atualiza o contexto e o DB;
+        contexto->getCarteira()->setTipoPerfil(*perfil);
+        db->exec(
+           "UPDATE TABLE Carteiras SET PERFIL = \"" +
+           perfil->getValor() + "\" WHERE CODIGO = " +
+           contexto->getCarteira()->getCodigo().getValor() +
+           ";",
+            resultSql,
+            "Erro ao atualizar o Perfil da carteira no DB: "
+        );
+    }
+
+    delete resultSql;
     return ;
 }
 
