@@ -121,6 +121,7 @@ void AccountCommandChangeSenha::execute(Senha senha){
         "Erro ao Atualizar a senha no DB: "
     );
 
+    delete resultSql;
     return;
 }
 
@@ -140,6 +141,7 @@ void AccountCommandChangeName::execute(Nome nome){
         "Erro ao Atualizar o nome no DB: "
     );
 
+    delete resultSql;
     return;
 }
 
@@ -159,6 +161,8 @@ PresentationInte* AccountCommandRemoveAccount::execute(){
 
     contexto->setUser(nullptr);
     contexto->setCarteira(nullptr);
+    
+    delete resultSql;
     return new AuthenticationPre(contexto);
 }
 

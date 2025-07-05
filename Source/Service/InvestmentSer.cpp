@@ -1,5 +1,27 @@
 #include "Source/Service/Service.hpp"
 
+string formatDinheiro(string dinheiro){
+    // Dados da função;
+    string out;
+    int size = dinheiro.size();
+    
+    // Valida a entrada;
+    if(size > 9) throw runtime_error("Valor ultrapassa o limite permitido.");
+    
+    // Formata a entrada;
+    for(int i = 0; i < size; i++){
+        if(!isdigit(dinheiro[i]))
+            // Retorna erro caso exista um caractere invalido;
+            throw runtime_error("Valor possui caracteres não numéticos: " + dinheiro[i]);
+        else if(size-i == 2)
+            out += ",";
+        else if((size-i-2)%3 == 0 and i != 0)
+            out += ".";
+        out += dinheiro[i];
+    }
+    return out;
+}
+
 void InvestmentCommandRemoveOrder::execute(CodigoNeg codNeg){
     // Inicia o DB;
     DB *db = DB::getInstance();
@@ -15,6 +37,7 @@ void InvestmentCommandRemoveOrder::execute(CodigoNeg codNeg){
         codNeg.getValor() + "\";";
     
     db->exec(deleteOrder, resultSql, "Erro ao remover a ordem no DB: ");
+    delete resultSql;
     return ;
 }
 
@@ -43,13 +66,57 @@ void InvestmentCommandMakeOrder::execute(CodigoNeg codNeg, Quantidade quantidade
         data.getValor() + "\", \"" + resultSql[0][0]["PRECO"] + "\", \"" + quantidade.getValor() +
         "\")";
     db->exec(makeOrder, resultSql, "Erro ao adicionar a nova ordem no DB: ");
+    delete resultSql;
     return ;
 }
 
 // TODO:
 vector<Ordem> InvestmentCommandListOrders::execute(){
-    vector<Ordem> a;
-    return a;
+    // Inicia o DB;
+    DB *db = DB::getInstance();
+    Tabela *resultSql = new Tabela();
+
+    // Dados do contexto
+    Carteira *userCarteira = contexto->getCarteira();
+
+    // Procura as ordens no DB
+    string findOrdens =
+        "SELECT * FROM Ordens WHERE CODIGO = " +
+        userCarteira->getCodigo().getValor(); +
+        ";";
+    db->exec(findOrdens, resultSql, "Erro ao procurar as ordens da carteira: ");
+
+    // Prepara a saida da função;
+    vector<Ordem> out;
+    Codigo codigo; codigo.setValor(userCarteira->getCodigo().getValor());
+    for(Linha linha : resultSql[0]){
+        Ordem ordem;
+
+        CodigoNeg codigoNeg;
+        codigoNeg.setValor(linha["CODIGO NEG"]);
+        
+        Data data;
+        data.setValor(linha["DATA"]);
+        
+        string preco;
+        preco = linha["PRECO"];
+        Dinheiro dinheiro;
+        dinheiro.setValor(formatDinheiro(preco));
+        
+        Quantidade quantidade;
+        quantidade.setValor(linha["QUANTIDADE"]);
+
+        ordem.setCodigo(codigo);
+        ordem.setCodigoNeg(codigoNeg);
+        ordem.setData(data);
+        ordem.setDinheiro(dinheiro);
+        ordem.setQuantidade(quantidade);
+
+        out.push_back(ordem);
+    }
+
+    delete resultSql;
+    return out;
 }
 
 // TODO:
