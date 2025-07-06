@@ -8,7 +8,7 @@
 #include <array>
 #include <memory>
 
-#include "Source/CtrState.cpp"
+#include "Source/CtrState.hpp"
 #include "Source/Libs/entidades.hpp"
 
 using namespace std;

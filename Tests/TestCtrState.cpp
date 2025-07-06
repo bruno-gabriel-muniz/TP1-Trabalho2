@@ -4,7 +4,7 @@
 #include "Tests/Test.hpp"
 #include "Tests/StubPresentation.cpp"
 
-#include "Source/CtrState.cpp"
+#include "Source/CtrState.hpp"
 
 using namespace std;
 

@@ -1,5 +1,5 @@
 #include "Source/InterfacePresentation.hpp"
-#include "Source/CtrState.cpp"
+#include "Source/CtrState.hpp"
 
 class StubPresentation : public PresentationInte{
     public:

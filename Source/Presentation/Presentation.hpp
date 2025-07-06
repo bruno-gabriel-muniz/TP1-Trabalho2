@@ -15,7 +15,7 @@
 
 #include "Source/InterfacePresentation.hpp"
 #include "Source/InterfacesService.hpp"
-#include "Source/CtrState.cpp"
+#include "Source/CtrState.hpp"
 
 using namespace std;
 
@@ -24,9 +24,16 @@ using namespace std;
  * @brief Gerencia a UI de Autenticação/Login e usa a interface @ref AuthenticationServiceInte "AuthenticationServiceInte" para validações internas.
  */
 class AuthenticationPre: public PresentationInte{
+    private:
+        Ncpf cpfLogin, cpfMakeAccount;
+        Senha senhaLogin, senhaMakeAccount;
+        Nome nomeMakeAccount;
+        AuthenticationServiceInte *ctrService;
     public:
         
         AuthenticationPre(CtrState *ctx){context = ctx;};
+
+        void setService(AuthenticationServiceInte *service);
     
         /**
          * @brief Define a saída do app.
@@ -38,9 +45,21 @@ class AuthenticationPre: public PresentationInte{
          * @return Próxima UI.
          */
         PresentationInte* showMainMenu();
-        PresentationInte* run() {return this;};
-        void change(PresentationInte *request) {};
+
+        void getDataLogin();
+
+        void getDataMakeAccount();
+
+        static string telaMain;
+        PresentationInte* run();
+        void change(PresentationInte *request);
 };
+
+
+inline void AuthenticationPre::setService(AuthenticationServiceInte *service) {ctrService = service;}
+
+inline void AuthenticationPre::change(PresentationInte *request) {context->setState(request);}
+
 
 /**
  * @class AccountPre

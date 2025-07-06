@@ -33,11 +33,11 @@ private:
 public:
     CtrState() {};
 
-    void setUser(Conta *usr) {user = usr;}
-    void setCarteira(Carteira *carts) {carteira = carts;}
+    inline void setUser(Conta *usr) {user = usr;}
+    inline void setCarteira(Carteira *carts) {carteira = carts;}
 
-    Conta* getUser() {return user;}
-    Carteira* getCarteira() {return carteira;}
+    inline Conta* getUser() {return user;}
+    inline Carteira* getCarteira() {return carteira;}
 
     /**
      * @brief Altera internamente o estado da UI.
@@ -57,11 +57,11 @@ public:
     void run();
 };
 
-void CtrState::setState(PresentationInte *rqst){
+inline void CtrState::setState(PresentationInte *rqst){
     state = rqst;
 }
 
-void CtrState::change(){
+inline void CtrState::change(){
     try{
         state->change(request);
     }
@@ -70,7 +70,7 @@ void CtrState::change(){
     }
 }
 
-void CtrState::run(){
+inline void CtrState::run(){
     request = state->run();
     while(request != nullptr){
         change();
