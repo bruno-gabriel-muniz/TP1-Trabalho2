@@ -871,7 +871,7 @@ class TestLogOut : public Test{
 
             // Roda o teste;
             try{
-
+                ctrAccount.logOut();
             } catch (runtime_error &x){
                 out = x.what();
                 result = ResultFail();
@@ -891,5 +891,75 @@ class TestLogOut : public Test{
             else out = "PresentationInte*";
 
             delete contexto;
+        }
+};
+
+class TestRemoveWallet : public Test{
+    public:
+        void exec(){
+            // Define os dados do Teste.
+            nameTest = "Test->AccountCommandRemoveWallet";
+            typeTest = ValidArgument();
+            in = "Nome: Test";
+            expected = "void";
+
+            // Configura variaveis do teste;
+            DB *db = DB::getInstance(); // DB sqlite
+            Tabela *resultSql = new Tabela(); // Result query sql
+
+            CtrState *contexto = new CtrState();
+            AccountSer ctrAccount = AccountSer(contexto);
+            Conta *user = new Conta();
+
+            Ncpf cpf;
+            Senha senha;
+            Nome nomeUser;
+
+            cpf.setValor("842.259.180-41");
+            senha.setValor("B1g#ji");
+            nomeUser.setValor("Ze de Fulano");
+
+            user->setNcpf(cpf);
+            user->setSenha(senha);
+            user->setNome(nomeUser);
+
+            contexto->setUser(user);
+
+            db->exec(
+                "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"Test\", 00005, Agreseivo, \"842.259.180-41\")",
+                resultSql,
+                "Erro ao inserir dados de teste no DB: "
+            );
+            Nome nomeInput;
+            nomeInput.setValor("Test");
+
+            // Roda o teste;
+            try{
+                ctrAccount.removeWallet(nomeInput);
+            } catch (runtime_error &x){
+                out = x.what();
+                result = ResultFail();
+
+                // Limpa os dados do teste;
+                db->exec("DELETE FROM Carteiras", resultSql, "Erro ao limpar dados do test: ");
+                delete resultSql;
+                delete contexto;
+                return ;
+            }
+
+            // Valida os dados do Test.
+            result = ResultPass();
+            out = "void, but incorret data.";
+
+            db->exec("SELCET * FROM Carteiras;", resultSql, "Erro ao procurar a carteira no DB para validar os dados: ");
+
+            if(resultSql->size() > 0) result = ResultFail();
+            else out = "void";
+
+            // Limpa os dados do teste;
+            db->exec("DELETE FROM Carteiras", resultSql, "Erro ao limpar dados do test: ");
+            delete resultSql;
+            delete contexto;
+            return ;
         }
 };
