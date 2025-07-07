@@ -15,8 +15,8 @@
 
 #include <iostream>
 
-#include "Source/InterfacePresentation.hpp"
-#include "Source/Libs/entidades.hpp"
+#include "InterfacePresentation.hpp"
+#include "Libs/entidades.hpp"
 
 using namespace std;
 
@@ -43,7 +43,7 @@ public:
      * @brief Altera internamente o estado da UI.
      * @param request Instância do novo estado da UI.
      */
-    void setState(PresentationInte *request);
+    void setState(PresentationInte *);
 
     /**
      * @brief Utiliza o estado atual da UI para validar a transição de estado.

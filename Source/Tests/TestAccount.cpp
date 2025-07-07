@@ -1,4 +1,4 @@
-#include "Source/Service/AccountSer.cpp"
+#include "Service/AccountSer.cpp"
 #include "Tests/Test.hpp"
 
 class TestMakeWallet : public Test{

@@ -1,4 +1,4 @@
-#include "Source/Service/Service.hpp"
+#include "Service/Service.hpp"
 
 using namespace std;
 
@@ -31,7 +31,7 @@ PresentationInte* AuthentCommandMakeAccount::execute(Ncpf cpf, Senha senha, Nome
     contexto->setUser(user);
 
     delete result;
-    return new AccountPre(contexto);
+    return new AccountPre(contexto, new AccountSer(contexto));
 }
 
 PresentationInte* AuthentCommandLogin::execute(Ncpf cpf, Senha senha){
@@ -63,7 +63,7 @@ PresentationInte* AuthentCommandLogin::execute(Ncpf cpf, Senha senha){
     contexto->setUser(user);
 
     delete result;
-    return new AccountPre(contexto);
+    return new AccountPre(contexto, new AccountSer(contexto));
 
 }
 

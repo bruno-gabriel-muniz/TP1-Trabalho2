@@ -7,6 +7,8 @@
 
 #include <memory>
 
+#include "InterfacesService.hpp"
+
 class CtrState;
 
 /**
@@ -16,8 +18,9 @@ class CtrState;
 class PresentationInte {
 protected:
     CtrState *context;
-
+    ServiceInte *serv;
 public:
+
     /**
      * @brief Executa a interface.
      * @return Retorna a próxima interface a ser executada.

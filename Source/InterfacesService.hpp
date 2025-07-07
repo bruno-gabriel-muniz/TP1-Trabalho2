@@ -8,12 +8,12 @@
 #include <array>
 #include <memory>
 
-#include "Source/CtrState.hpp"
-#include "Source/Libs/entidades.hpp"
+#include "Libs/entidades.hpp"
 
 using namespace std;
 
 class CtrState; // declaração antecipada
+class PresentationInte;
 
 // Interfaces / Invokers
 

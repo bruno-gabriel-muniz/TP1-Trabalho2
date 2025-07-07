@@ -12,9 +12,9 @@
 #pragma once
 #include <cstdlib>
 
-#include "Source/InterfacesService.hpp"
-#include "Source/Presentation/Presentation.hpp"
-#include "Source/DB.cpp"
+#include "InterfacesService.hpp"
+#include "Presentation/Presentation.hpp"
+#include "DB.hpp"
 
 // Command
 

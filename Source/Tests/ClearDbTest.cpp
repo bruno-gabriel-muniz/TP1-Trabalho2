@@ -1,4 +1,4 @@
-# include "Source/DB.cpp"
+# include "DB.hpp"
 
 int main(){
     // Inicia o DB;

@@ -13,9 +13,9 @@
 
 #pragma once
 
-#include "Source/InterfacePresentation.hpp"
-#include "Source/InterfacesService.hpp"
-#include "Source/CtrState.hpp"
+#include "InterfacePresentation.hpp"
+#include "InterfacesService.hpp"
+#include "CtrState.hpp"
 
 using namespace std;
 
@@ -29,6 +29,7 @@ class AuthenticationPre: public PresentationInte{
         Senha senhaLogin, senhaMakeAccount;
         Nome nomeMakeAccount;
         AuthenticationServiceInte *ctrService;
+        static string telaMain;
     public:
         
         AuthenticationPre(CtrState *ctx){context = ctx;};
@@ -50,15 +51,12 @@ class AuthenticationPre: public PresentationInte{
 
         void getDataMakeAccount();
 
-        static string telaMain;
         PresentationInte* run();
-        void change(PresentationInte *request);
+        inline void change(PresentationInte *request){context->setState(request);}
 };
 
 
 inline void AuthenticationPre::setService(AuthenticationServiceInte *service) {ctrService = service;}
-
-inline void AuthenticationPre::change(PresentationInte *request) {context->setState(request);}
 
 
 /**
@@ -66,14 +64,33 @@ inline void AuthenticationPre::change(PresentationInte *request) {context->setSt
  * @brief Gerencia a UI do gerenciamento da conta e usa a interface @ref AccountServiceInte "AccountServiceInte" para validações internas.
  */
 class AccountPre: public PresentationInte{
+    private:
+        AccountServiceInte *ctrService;
+        Nome
+            nomeManageWallet, nomeRemoveWallet, nomeMakeWallet,
+            nomeChangeUser;
+        TipoPerfil
+            perfilMakeWallet;
+        Senha
+            senhaChangeUser;
+        static string telaMain, telaManageWallets1, telaManageWallets2, telaEdit;
     public:
 
-        AccountPre(CtrState *ctx){context = ctx;};
+        inline AccountPre(CtrState *ctx, AccountServiceInte * ser){
+            context = ctx;
+            ctrService = ser;
+        }
+
+        string getWallets();
+
+        void getDataManageWallet();
+        void getDataRemoveWallet();
+        void getDataMakeWallet();
 
         /**
          * @brief Define a saída do app.
          */
-        nullptr_t exit();
+        inline nullptr_t exit() {return nullptr;}
         /**
          * @brief Exibe o menu de edição da conta com validação via serviço.
          * @return Próxima UI.
@@ -84,22 +101,8 @@ class AccountPre: public PresentationInte{
          * @return Próxima UI.
          */
         PresentationInte* showWallets();
-        PresentationInte* run() {return this;};
-        void change(PresentationInte *request) {};
-};
-
-/**
- * @class PersAccountPre
- * @brief Representa uma UI estática para contas, indicando que a instância de @ref AccountPre "AccountPre" não deve ser substituída.
- */
-class PersAccountPre: public PresentationInte{
-    //Classe que indica que a AccountPre não precisa ser alterada.
-    public:
-
-        PersAccountPre(CtrState *ctx){context = ctx;};
-
-        PresentationInte* run() {return this;};
-        void change(PresentationInte *request) {};
+        PresentationInte* run();
+        inline void change(PresentationInte *request) {context->setState(request);}
 };
 
 /**

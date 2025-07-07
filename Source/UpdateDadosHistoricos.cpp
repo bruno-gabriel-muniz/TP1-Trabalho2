@@ -1,6 +1,6 @@
 # include <fstream>
 
-# include "Source/DB.cpp"
+# include "DB.cpp"
 
 int main(){
     // Configura os dados do DB;

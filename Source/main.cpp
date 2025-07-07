@@ -1,6 +1,6 @@
-#include "Source/Presentation/AuthenticationPre.cpp"
-#include "Source/Service/AuthenticationSer.cpp"
-#include "Source/CtrState.hpp"
+#include "Presentation/Presentation.hpp"
+#include "Service/Service.hpp"
+#include "CtrState.hpp"
 
 int main(){
     CtrState *State = new CtrState();
