@@ -194,13 +194,13 @@ PresentationInte* AccountCommandRemoveAccount::execute(){
     contexto->setCarteira(nullptr);
     
     delete resultSql;
-    return new AuthenticationPre(contexto);
+    return new AuthenticationPre(contexto, new AuthenticationSer(contexto));
 }
 
 PresentationInte* AccountCommandLogOut::execute(){
     contexto->setUser(nullptr);
     contexto->setCarteira(nullptr);
-    return new AuthenticationPre(contexto);
+    return new AuthenticationPre(contexto, new AuthenticationSer(contexto));
 }
 
 

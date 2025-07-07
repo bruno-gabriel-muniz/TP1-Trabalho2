@@ -32,9 +32,8 @@ class AuthenticationPre: public PresentationInte{
         static string telaMain;
     public:
         
-        AuthenticationPre(CtrState *ctx){context = ctx;};
+        inline AuthenticationPre(CtrState *ctx, AuthenticationServiceInte *service){context = ctx; ctrService = service;}
 
-        void setService(AuthenticationServiceInte *service);
     
         /**
          * @brief Define a saída do app.
@@ -54,9 +53,6 @@ class AuthenticationPre: public PresentationInte{
         PresentationInte* run();
         inline void change(PresentationInte *request){context->setState(request);}
 };
-
-
-inline void AuthenticationPre::setService(AuthenticationServiceInte *service) {ctrService = service;}
 
 
 /**

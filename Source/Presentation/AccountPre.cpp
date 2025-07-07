@@ -5,7 +5,7 @@ using namespace std;
 
 string AccountPre::telaMain =
     string(80, '=') + "\n" + string(33, ' ') + "|Conta|\n" + string(80, '-') + "\n\n\n" +
-    " ManageWallets: 1\n EditAccount: 2\n Exit: 3\n input -> ";
+    " ManageWallets: 1\n EditAccount: 2\n LogOut: 3\n Exit: 4\n input -> ";
 
 string AccountPre::telaManageWallets1 =
     string(80, '-') + "\n" + string(33, ' ') + "|Manage|\n\n";
@@ -24,8 +24,11 @@ PresentationInte* AccountPre::run(){
             if (request) break;
             cout << "\n\n\n\n\n" << telaMain;
         } else if (resp == "2"){
-
-        } else if (resp == "3"){
+            
+        }  else if (resp == "3"){
+            request = ctrService->logOut();
+            break;
+        } else if (resp == "4"){
             request = exit();
             break;
         } else cout << "\n\n\n\n\n" << "Entrada não reconhecida.\n" << telaMain;
