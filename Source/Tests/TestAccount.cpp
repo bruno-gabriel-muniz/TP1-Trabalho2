@@ -7,7 +7,7 @@ class TestMakeWallet : public Test{
             // Define os dados do Teste.
             nameTest = "Teste->AccountCommandMakeWallet";
             typeTest = ValidArgument();
-            in = "Cpf: 842.259.180-41 / Nome: Carteira Agresiva / TipoPerfil: Agressivo";
+            in = "Cpf: 842.259.180-41 / Nome: Carteira Agressiva / TipoPerfil: Agressivo";
             expected = "void";
 
             // Cria as variáveis do teste
@@ -35,7 +35,7 @@ class TestMakeWallet : public Test{
             TipoPerfil perfil;
             Nome nome;
             perfil.setValor("Agressivo");
-            nome.setValor("Carteira Agresiva");
+            nome.setValor("Carteira Agressiva");
 
             // Roda o teste
 
@@ -47,7 +47,7 @@ class TestMakeWallet : public Test{
                 
                 // Limpa os Dados;
                 db->exec(
-                    "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\" AND NOME = \"Carteira Agresiva\";",
+                    "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\" AND NOME = \"Carteira Agressiva\";",
                     resultSql,
                     "Erro ao limpar os dados do teste: "
                 );
@@ -71,7 +71,7 @@ class TestMakeWallet : public Test{
 
             // Limpa os Dados;
             db->exec(
-                "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\" AND NOME = \"Carteira Agresiva\";",
+                "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\" AND NOME = \"Carteira Agressiva\";",
                 resultSql,
                 "Erro ao limpar os dados do teste: "
             );
@@ -86,7 +86,7 @@ class TestMakeWalletFDuplicate : public Test{
             // Define os dados do Teste.
             nameTest = "Teste->AccountCommandMakeWallet (Duplicate)";
             typeTest = InvalidArgument();
-            in = "Cpf: 842.259.180-41 / Nome: Carteira Agresiva / TipoPerfil: Agressivo";
+            in = "Cpf: 842.259.180-41 / Nome: Carteira Agressiva / TipoPerfil: Agressivo";
             expected = "Erro: outra carteira já possui esse nome.";
 
             // Cria as variáveis do teste
@@ -114,12 +114,12 @@ class TestMakeWalletFDuplicate : public Test{
             TipoPerfil perfil;
             Nome nome;
             perfil.setValor("Agressivo");
-            nome.setValor("Carteira Agresiva");
+            nome.setValor("Carteira Agressiva");
 
             string codigoF = gerarCodigo();
 
             string insertWalletS = 
-                "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"Carteira Agresiva\", \"" +
+                "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"Carteira Agressiva\", \"" +
                 codigoF + "\", \"Agressivo\", \"842.259.180-41\")";
             db->exec(insertWalletS, resultSql, "Erro ao inserir a carteira: ");
 
@@ -134,7 +134,7 @@ class TestMakeWalletFDuplicate : public Test{
 
                 // Limpa os Dados;
                 db->exec(
-                    "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\" AND NOME = \"Carteira Agresiva\";",
+                    "DELETE FROM Carteiras;",
                     resultSql,
                     "Erro ao limpar os dados do teste: "
                 );
@@ -148,7 +148,7 @@ class TestMakeWalletFDuplicate : public Test{
 
             // Limpa os Dados;
             db->exec(
-                "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\" AND NOME = \"Carteira Agresiva\";",
+                "DELETE FROM Carteiras WHERE CPF = \"842.259.180-41\" AND NOME = \"Carteira Agressiva\";",
                 resultSql,
                 "Erro ao limpar os dados do teste: "
             );
@@ -163,7 +163,7 @@ class TestMakeWalletFLimitWallet : public Test{
             // Define os dados do Teste.
             nameTest = "Teste->AccountCommandMakeWallet (LimitWallet)";
             typeTest = InvalidArgument();
-            in = "Cpf: 842.259.180-41 / Nome: Carteira Agresiva / TipoPerfil: Agressivo";
+            in = "Cpf: 842.259.180-41 / Nome: Carteira Agressiva / TipoPerfil: Agressivo";
             expected = "Erro: limite de Carteiras atingido.";
 
             // Cria as variáveis do teste
@@ -191,7 +191,7 @@ class TestMakeWalletFLimitWallet : public Test{
             TipoPerfil perfil;
             Nome nome;
             perfil.setValor("Agressivo");
-            nome.setValor("Carteira Agresiva");
+            nome.setValor("Carteira Agressiva");
 
             for(int i = 0; i < 5; i++){
                 string codigoF = gerarCodigo();
@@ -242,7 +242,7 @@ class TestManageWallet : public Test{
             // Define os dados do Teste.
             nameTest = "Teste->AccountCommandManageWallet";
             typeTest = ValidArgument();
-            in = "Nome: Carteira Agresiva";
+            in = "Nome: Carteira Agressiva";
             expected = "*InvestmentPre";
 
             // Cria as variáveis do teste
@@ -270,12 +270,12 @@ class TestManageWallet : public Test{
             TipoPerfil perfil;
             Nome nome;
             perfil.setValor("Agressivo");
-            nome.setValor("Carteira Agresiva");
+            nome.setValor("Carteira Agressiva");
 
             // Configura os dados no DB
             string codigoF = gerarCodigo();
             string insertWalletS = 
-                "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"Carteira Agresiva\", \"" +
+                "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"Carteira Agressiva\", \"" +
                 codigoF + "\", \"Agressivo\", \"842.259.180-41\")";
             db->exec(insertWalletS, resultSql, "Erro ao inserir a carteira: ");
 
@@ -367,7 +367,7 @@ class TestManageWalletNotFound : public Test{
             // Configura os dados no DB
             string codigoF = gerarCodigo();
             string insertWalletS = 
-                "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"Carteira Agresiva\", \"" +
+                "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"Carteira Agressiva\", \"" +
                 codigoF + "\", \"Agressivo\", \"842.259.180-41\")";
             db->exec(insertWalletS, resultSql, "Erro ao inserir a carteira: ");
 
@@ -447,12 +447,12 @@ class TestListWallet : public Test{
             TipoPerfil perfil;
             Nome nome;
             perfil.setValor("Agressivo");
-            nome.setValor("Carteira Agresiva");
+            nome.setValor("Carteira Agressiva");
             
             // Configura os dados no DB
             string codigoF = gerarCodigo();
             string insertWalletS = 
-                "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"Carteira Agresiva\", \"" +
+                "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"Carteira Agressiva\", \"" +
                 codigoF + "\", \"Agressivo\", \"842.259.180-41\")";
             db->exec(insertWalletS, resultSql, "Erro ao inserir a carteira: ");
 
@@ -491,7 +491,8 @@ class TestListWallet : public Test{
             Carteira carteiraResult = a[0];
             if(
                 carteiraResult.getNome().getValor() != nome.getValor() or
-                carteiraResult.getTipoPerfil().getValor() != perfil.getValor()
+                carteiraResult.getTipoPerfil().getValor() != perfil.getValor() or
+                a.size() == 1
             ) {
                 result = ResultFail();
                 out = "vector<Carteira>, but incorret data";
@@ -926,7 +927,7 @@ class TestRemoveWallet : public Test{
             contexto->setUser(user);
 
             db->exec(
-                "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"Test\", 00005, Agreseivo, \"842.259.180-41\")",
+                "INSERT INTO Carteiras (NOME, CODIGO, PERFIL, CPF) VALUES (\"Test\", 00005, \"Agressivo\", \"842.259.180-41\");",
                 resultSql,
                 "Erro ao inserir dados de teste no DB: "
             );
@@ -951,7 +952,7 @@ class TestRemoveWallet : public Test{
             result = ResultPass();
             out = "void, but incorret data.";
 
-            db->exec("SELCET * FROM Carteiras;", resultSql, "Erro ao procurar a carteira no DB para validar os dados: ");
+            db->exec("SELECT * FROM Carteiras;", resultSql, "Erro ao procurar a carteira no DB para validar os dados: ");
 
             if(resultSql->size() > 0) result = ResultFail();
             else out = "void";

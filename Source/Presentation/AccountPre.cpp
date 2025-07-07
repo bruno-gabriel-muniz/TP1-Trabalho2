@@ -11,7 +11,7 @@ string AccountPre::telaManageWallets1 =
     string(80, '-') + "\n" + string(33, ' ') + "|Manage|\n\n";
 
 string AccountPre::telaManageWallets2 =
-    " Acesser Carteira: 1\n Remover Carteira: 2\n Criar Carteira: 3\n Voltar: 4\n input ->";
+    " Acesser Carteira: 1\n Remover Carteira: 2\n Criar Carteira: 3\n Voltar: 4\n input -> ";
 
 PresentationInte* AccountPre::run(){
     PresentationInte *request;
@@ -38,7 +38,7 @@ string AccountPre::getWallets(){
     vector<Carteira> carteiras = ctrService->listWallets();
     string out = "";
     for(Carteira carteira : carteiras){
-        out = "Nome: " + carteira.getNome().getValor() + "\n\t";
+        out += "Nome: " + carteira.getNome().getValor() + "\n\t";
         out += "Codigo: " + carteira.getCodigo().getValor();
         out += " | Perfil: " + carteira.getTipoPerfil().getValor();
         out += "\n\n";

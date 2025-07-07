@@ -64,14 +64,14 @@ void AccountCommandMakeWallet::execute(Nome nome, TipoPerfil perfil){
     delete resultSql;
 }
 
-// TODO: 
+
 void AccountCommandRemoveWallet::execute(Nome nome){
     // Inica o DB;
     DB *db = DB::getInstance();
     Tabela *resultSql = new Tabela();
 
     // Seleciona a carteira;
-    string findWallet = "SELCET CODIGO FROM Carteiras WHERE CPF = \"" +
+    string findWallet = "SELECT CODIGO FROM Carteiras WHERE CPF = \"" +
         contexto->getUser()->getNcpf().getValor() +
         "\" AND NOME = \"" + nome.getValor() + "\""
         ";";
@@ -86,7 +86,7 @@ void AccountCommandRemoveWallet::execute(Nome nome){
     db->exec(findWallet, resultSql, "Erro ao verificar se a carteira possui ordens: ");
 
     // Verfica se a carteira possui ordens;
-    string findOrders = "SELCET * FROM Ordens WHERE CODIGO = " + codigo +
+    string findOrders = "SELECT * FROM Ordens WHERE CODIGO = " + codigo +
         ";";
     db->exec(findOrders, resultSql, "Erro ao verificar se a carteira possui ordens: ");
 
@@ -94,7 +94,7 @@ void AccountCommandRemoveWallet::execute(Nome nome){
     if(resultSql->size() >= 1) throw runtime_error("A carteira ainda possui ordens, não pode ser deletada.");
 
     // Deleta a carteira caso ela não possua ordens
-    string deleteWallet = "DELETE * FROM Carteiras WHERE CODIGO = " + codigo + ";";
+    string deleteWallet = "DELETE FROM Carteiras WHERE CODIGO = " + codigo + ";";
     db->exec(deleteWallet, resultSql, "Erro ao deletar a carteira do DB: ");
 
     return;

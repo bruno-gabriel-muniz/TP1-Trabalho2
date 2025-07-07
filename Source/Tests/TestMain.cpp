@@ -35,7 +35,7 @@ int main(){
     cout << "\n\n";
     TestRemoveAccount().run();
     cout << "\n\n";
-    TestRemoveAccount().run();
+    TestRemoveWallet().run();
     cout << "\n\n";
     cout << "\t\t\t\t\t__Investment__";
     cout << "\n\n";
