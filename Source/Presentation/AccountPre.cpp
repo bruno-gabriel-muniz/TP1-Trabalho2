@@ -4,7 +4,7 @@
 using namespace std;
 
 string AccountPre::telaMain =
-    string(80, '=') + "\n" + string(33, ' ') + "|Conta|\n" + string(80, '-') + "\n\n\n" +
+    string(80, '=') + "\n" + string(33, ' ') + "|Conta|\n" + string(80, '-') + "\n\n\n"
     " ManageWallets: 1\n EditAccount: 2\n LogOut: 3\n Exit: 4\n input -> ";
 
 string AccountPre::telaManageWallets1 =
@@ -12,6 +12,10 @@ string AccountPre::telaManageWallets1 =
 
 string AccountPre::telaManageWallets2 =
     " Acesser Carteira: 1\n Remover Carteira: 2\n Criar Carteira: 3\n Voltar: 4\n input -> ";
+
+string AccountPre::telaEdit =
+    string(80, '-') + "\n" + string(33, ' ') + "|EditAccount|\n\n"
+    " Mudar Nome: 1\n Mudar Senha: 2\n Remover Conta: 3\n Voltar: 4\n input -> ";
 
 PresentationInte* AccountPre::run(){
     PresentationInte *request;
@@ -24,7 +28,9 @@ PresentationInte* AccountPre::run(){
             if (request) break;
             cout << "\n\n\n\n\n" << telaMain;
         } else if (resp == "2"){
-            
+            request = showEditAccount();
+            if(request) break;
+            cout << "\n\n\n\n\n" << telaMain;
         }  else if (resp == "3"){
             request = ctrService->logOut();
             break;
@@ -127,3 +133,58 @@ PresentationInte* AccountPre::showWallets(){
     
     return request;
 };
+
+void AccountPre::getDataName(){
+    string resp;
+    cout << "\n Digite o novo nome: ";
+    cin >> resp;
+    nomeChangeUser.setValor(resp);
+    return ;
+}
+
+void AccountPre::getDataSenha(){
+    string resp, resp2;
+    cout << "\n Digite a nova senha: ";
+    cin >> resp;
+    cout << "\n Digite a nova senha novamente: ";
+    cin >> resp2;
+    if(resp2!=resp) throw runtime_error("As senhas não são iguais.");
+    senhaChangeUser.setValor(resp);
+    return ;
+}
+
+PresentationInte* AccountPre::showEditAccount(){
+    PresentationInte *request;
+    string resp;
+    cout << telaEdit;
+    while (true) {
+        cin >> resp;
+        if (resp == "1"){
+            try{
+                getDataName();
+                ctrService->changeName(nomeChangeUser);
+            } catch (exception &e){
+                cout << "\n\n\n\n\n" << e.what() << "\n" << telaEdit;
+                continue;
+            }
+            cout << "\n\n\n\n\n" << telaEdit;
+        } else if (resp == "2"){
+            try{
+                getDataSenha();
+                ctrService->changeSenha(senhaChangeUser);
+            } catch (exception &e){
+                cout << "\n\n\n\n\n" << e.what() << "\n" << telaEdit;
+                continue;
+            }
+            cout << "\n\n\n\n\n" << telaEdit;
+        }  else if (resp == "3"){
+            request = ctrService->removeAccount();
+            break;
+        } else if (resp == "4"){
+            request = nullptr;
+            break;
+        } else cout << "\n\n\n\n\n" << "Entrada não reconhecida.\n" << telaMain;
+    }
+    
+    return request;
+}

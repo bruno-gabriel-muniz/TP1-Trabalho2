@@ -83,6 +83,9 @@ class AccountPre: public PresentationInte{
         void getDataRemoveWallet();
         void getDataMakeWallet();
 
+        void getDataSenha();
+        void getDataName();
+
         /**
          * @brief Define a saída do app.
          */
