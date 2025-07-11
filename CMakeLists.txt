@@ -45,6 +45,7 @@ add_executable(test_exec
     Source/Libs/dominios.cpp
     Source/Presentation/AuthenticationPre.cpp
     Source/Presentation/AccountPre.cpp
+    Source/Presentation/InvestmentPre.cpp
     Source/DB.cpp
 )
 

@@ -309,6 +309,22 @@ public:
     void execute(CodigoNeg codNeg);
 };
 
+/**
+ * @class InvestmentCommandBack
+ * @ingroup ComandosService
+ * @brief Volta para a tela anterior.
+ */
+class InvestmentCommandBack : public Command {
+public:
+    InvestmentCommandBack(CtrState *ctx) : Command(ctx) {}
+
+    /**
+     * @brief Retorna para a tela anteriror.
+     */
+    inline PresentationInte* execute() {
+        return new AccountPre(contexto, new AccountSer(contexto));
+    };
+};
 
 /**
  * @class InvestmentSer
@@ -320,17 +336,19 @@ private:
     InvestmentCommandListOrders cmdListOrders;
     InvestmentCommandMakeOrder cmdMakeOrder;
     InvestmentCommandRemoveOrder cmdRemoveOrder;
+    InvestmentCommandBack cmdBack;
 
 public:
     InvestmentSer(CtrState *ctx) :
                 cmdEditWallet(ctx), cmdListOrders(ctx),
-                cmdMakeOrder(ctx), cmdRemoveOrder(ctx)
+                cmdMakeOrder(ctx), cmdRemoveOrder(ctx), cmdBack(ctx)
     {context = ctx;};
 
     void removeOrder(CodigoNeg codNeg);
     void makeOrder(CodigoNeg codNeg, Quantidade quantidade, Data data);
     vector<Ordem> listOrders();
     void editWallet(Nome* nome = nullptr, TipoPerfil* perfil = nullptr);
+    PresentationInte* back();
 };
 
 

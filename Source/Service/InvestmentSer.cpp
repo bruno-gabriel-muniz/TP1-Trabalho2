@@ -181,3 +181,6 @@ vector<Ordem> InvestmentSer::listOrders(){
 void InvestmentSer::editWallet(Nome* nome, TipoPerfil* perfil){
     return cmdEditWallet.execute(nome, perfil);
 };
+PresentationInte* InvestmentSer::back(){
+    return cmdBack.execute();
+};

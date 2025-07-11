@@ -109,9 +109,14 @@ class AccountPre: public PresentationInte{
  * @brief Gerencia a parte de investimentos e usa a interface @ref InvestmentServiceInte "InvestmentServiceInte" para validações internas.
  */
 class InvestmentPre: public PresentationInte{
+    private:
+        CtrState *context;
+        InvestmentServiceInte *ctrService;
+
+        static string telaMain, telaEditCarteira, telaManageOrders;
     public:
 
-        InvestmentPre(CtrState *ctx){context = ctx;};
+        InvestmentPre(CtrState *ctx, InvestmentServiceInte *service){context = ctx; ctrService = service;};
 
         /**
          * @brief Define a volta para a UI anterior.
@@ -129,9 +134,9 @@ class InvestmentPre: public PresentationInte{
         /**
          * @brief Exibe a opção de acessar o menu de @ref showManageOrders "ManageOrders" e showEditCarteira "EditCarteira".
          */
-        void showMain();
-        PresentationInte* run() {return this;};
-        void change(PresentationInte *request) {};
+        PresentationInte* showMain();
+        inline PresentationInte* run() {return showMain();};
+        inline void change(PresentationInte *request) {context->setState(request);};
 };
 
 /** @} */

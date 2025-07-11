@@ -32,7 +32,7 @@ PresentationInte* AccountCommandManageWallet::execute(Nome nome){
 
     // Entra na cartiera
     delete resultSql;
-    return new InvestmentPre(contexto);
+    return new InvestmentPre(contexto, new InvestmentSer(contexto));
 }
 
 void AccountCommandMakeWallet::execute(Nome nome, TipoPerfil perfil){

@@ -158,5 +158,11 @@ public:
      */
     virtual void removeOrder(CodigoNeg codNeg) = 0;
 
+    /**
+     * @brief Retorna à tela anterior, geralmente a tela de gerenciamento de conta.
+     * @return Próxima interface do aplicativo.
+     */
+    virtual PresentationInte* back() = 0;
+
     ~InvestmentServiceInte() = default;
 };
