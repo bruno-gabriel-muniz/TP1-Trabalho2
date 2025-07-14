@@ -40,6 +40,7 @@ PresentationInte* AccountPre::run(){
         } else cout << "\n\n\n\n\n" << "Entrada não reconhecida.\n" << telaMain;
     }
     
+    cout << "\n\n";
     return request;
 }
 

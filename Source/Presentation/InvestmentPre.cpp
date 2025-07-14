@@ -6,10 +6,45 @@ string InvestmentPre::telaMain = string(80, '=') + "\n" +
     string(33, ' ') + "|Investments|\n" + string(80, '-') + "\n\n\n" +
     " EditWallet: 1\n ManageOrders: 2\n Back: 3\n input -> ";
 
-string InvestmentPre::telaEditCarteira = "Tela de Edição de Carteira";
+string InvestmentPre::telaEditCarteira = string(80, '-') + "\n" +
+    string(33, ' ') + "|Edit Wallet|\n" + "\n\n\n" +
+    " Mudar Nome: 1\n Mudar Perfil: 2\n Voltar: 3\n input -> ";
+
 string InvestmentPre::telaManageOrders = "Tela de Gerenciamento de Ordens";
 
-void InvestmentPre::showEditCarteira() {}; // TODO
+void InvestmentPre::showEditCarteira() {
+    string resp;
+    cout << telaEditCarteira;
+    while(true){
+        cin >> resp;
+        if (resp == "1"){
+            cout << "\n\n\tDigite o novo nome da carteira: ";
+            cin >> resp;
+            try {
+                nomeCarteira->setValor(resp);
+                ctrService->editWallet(nomeCarteira, nullptr);
+                cout << "\n\n\n\n\n" << telaEditCarteira;
+            } catch (exception &e) {
+                cout << "\n\n\n\n\n" << e.what() << "\n" << telaEditCarteira;
+            }
+        } else if (resp == "2"){
+            cout << "\n\n\tDigite o novo perfil da carteira: ";
+            cin >> resp;
+            try {
+                perfilCarteira->setValor(resp);
+                ctrService->editWallet(nullptr, perfilCarteira);
+                cout << "\n\n\n\n\n" << telaEditCarteira;
+            } catch (exception &e) {
+                cout << "\n\n\n\n\n" << e.what() << "\n" << telaEditCarteira;
+            }
+        } else if (resp == "3"){
+            return;
+        } else {
+           cout << "\n\n\n\n\nOpção inválida, tente novamente.\n" << telaEditCarteira;
+        }
+    }
+};
+
 void InvestmentPre::showManageOrders() {}; // TODO
 
 PresentationInte* InvestmentPre::backInterface(){

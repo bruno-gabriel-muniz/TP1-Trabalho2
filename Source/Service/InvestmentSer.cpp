@@ -124,7 +124,7 @@ void InvestmentCommandEditWallet::execute(Nome* nome, TipoPerfil* perfil){
     DB *db = DB::getInstance();
     Tabela *resultSql = new Tabela();
     
-    if(nome){
+    if(nome != nullptr){
         // Verifica se o usuário possui outra carteira com o nome novo
         string cpf = contexto->getUser()->getNcpf().getValor();
         db->exec(
@@ -151,7 +151,7 @@ void InvestmentCommandEditWallet::execute(Nome* nome, TipoPerfil* perfil){
         );
     }
 
-    if(perfil){
+    if(perfil != nullptr){
         // Atualiza o contexto e o DB;
         contexto->getCarteira()->setTipoPerfil(*perfil);
         db->exec(

@@ -110,8 +110,10 @@ class AccountPre: public PresentationInte{
  */
 class InvestmentPre: public PresentationInte{
     private:
-        CtrState *context;
         InvestmentServiceInte *ctrService;
+
+        Nome *nomeCarteira = new Nome();
+        TipoPerfil *perfilCarteira = new TipoPerfil();
 
         static string telaMain, telaEditCarteira, telaManageOrders;
     public:
