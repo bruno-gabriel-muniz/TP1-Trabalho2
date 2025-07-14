@@ -114,8 +114,11 @@ class InvestmentPre: public PresentationInte{
 
         Nome *nomeCarteira = new Nome();
         TipoPerfil *perfilCarteira = new TipoPerfil();
+        CodigoNeg codigoNovaOrdem;
+        Data dataNovaOrdem;
+        Quantidade qntNovaOrdem;
 
-        static string telaMain, telaEditCarteira, telaManageOrders;
+        static string telaMain, telaEditCarteira, telaManageOrders1, telaManageOrders2;
     public:
 
         InvestmentPre(CtrState *ctx, InvestmentServiceInte *service){context = ctx; ctrService = service;};
@@ -133,6 +136,12 @@ class InvestmentPre: public PresentationInte{
          * @brief Exibe o menu de gerenciamento das ordencom validação via serviço.
          */
         void showManageOrders();
+
+        /**
+         * @brief Formata as ordens da carteira.
+         */
+        string listOrders();
+
         /**
          * @brief Exibe a opção de acessar o menu de @ref showManageOrders "ManageOrders" e showEditCarteira "EditCarteira".
          */

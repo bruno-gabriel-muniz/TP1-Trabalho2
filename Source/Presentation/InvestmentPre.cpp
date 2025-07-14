@@ -10,7 +10,11 @@ string InvestmentPre::telaEditCarteira = string(80, '-') + "\n" +
     string(33, ' ') + "|Edit Wallet|\n" + "\n\n\n" +
     " Mudar Nome: 1\n Mudar Perfil: 2\n Voltar: 3\n input -> ";
 
-string InvestmentPre::telaManageOrders = "Tela de Gerenciamento de Ordens";
+string InvestmentPre::telaManageOrders1 = string(80, '-') + "\n" +
+    string(33, ' ') + "|Manage Orders|\n" + "\n";
+
+string InvestmentPre::telaManageOrders2 = 
+    " Criar Ordem: 1\n Remover Ordem: 2\n Voltar: 3\n input -> ";
 
 void InvestmentPre::showEditCarteira() {
     string resp;
@@ -45,7 +49,36 @@ void InvestmentPre::showEditCarteira() {
     }
 };
 
-void InvestmentPre::showManageOrders() {}; // TODO
+string InvestmentPre::listOrders() {
+    vector<Ordem> ordens = ctrService->listOrders();
+    string out = string(33, '-') + "\n";
+    for (Ordem& ordem : ordens) {
+        out += ordem.getCodigoNeg().getValor() + " -> Data: " + ordem.getData().getValor() + "\n";
+        out += "\t Preço: " + ordem.getDinheiro().getValor() + " | Quantidade: " + ordem.getQuantidade().getValor();
+        out += "\n";
+    }
+    out += string(33, '-') + "\n\n";
+    return out;
+}
+
+
+void InvestmentPre::showManageOrders() {
+    string resp, telaManageOrders;
+    telaManageOrders = telaManageOrders1 + listOrders() + telaManageOrders2;
+    cout << telaManageOrders;
+    while(true){
+        cin >> resp;
+        if (resp == "1"){
+            
+        } else if (resp == "2"){
+            
+        } else if (resp == "3"){
+            return;
+        } else {
+           cout << "\n\n\n\n\nOpção inválida, tente novamente.\n" << telaManageOrders;
+        }
+    }
+};
 
 PresentationInte* InvestmentPre::backInterface(){
     return ctrService->back();
