@@ -35,6 +35,13 @@ public:
 
     bool exec(string sqlQueryS, Tabela *result, string errMsg);
 
+    inline void close() {
+        if (db) {
+            sqlite3_close(db);
+            db = nullptr;
+        }
+    };
+
     ~DB();
 };
 

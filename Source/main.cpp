@@ -9,5 +9,7 @@ int main(){
     State->setState(TelaLogin);
 
     State->run();
+
+    DB::getInstance()->close();
     return 0;
 }
