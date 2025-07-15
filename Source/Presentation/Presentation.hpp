@@ -13,8 +13,8 @@
 
 #pragma once
 
-#include "InterfacePresentation.hpp"
-#include "InterfacesService.hpp"
+#include "Interfaces/InterfacePresentation.hpp"
+#include "Interfaces/InterfacesService.hpp"
 #include "CtrState.hpp"
 
 using namespace std;
