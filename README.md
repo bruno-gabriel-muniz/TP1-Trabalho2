@@ -4,15 +4,18 @@ Este projeto é um aplicativo de terminal desenvolvido como parte da disciplina 
 
 ## 📐 Arquitetura
 
+### UML de módulos do projeto
+![UML dos módulos do projeto](Docs/TP1-Trabalho2-Modulos.drawio.png)
+
 ### Estrutura Modular
 
-- **Main:** Ponto de entrada do sistema
-- **Presentation:** Interface de terminal (em fase final)
+- **MCE:** Ponto de controle de UI e dos dados da execução
+- **Presentation:** Interface de terminal
 - **Service:** Camada de serviços com o padrão Command
 
 ### Design Patterns Utilizados
 
-- **State:** Controla a interface e o fluxo do sistema
+- **State:** Controla a IU e contem os dados da execução
 - **Command:** Implementa a camada de serviço e aplica o princípio da responsabilidade única (**S** do SOLID)
 - **Singleton:** Gerencia o acesso compartilhado ao banco de dados
 
