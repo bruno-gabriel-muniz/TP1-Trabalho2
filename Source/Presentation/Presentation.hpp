@@ -114,7 +114,7 @@ class InvestmentPre: public PresentationInte{
 
         Nome *nomeCarteira = new Nome();
         TipoPerfil *perfilCarteira = new TipoPerfil();
-        CodigoNeg codigoNovaOrdem;
+        CodigoNeg codigoNovaOrdem, codigoRemoveOrdem;
         Data dataNovaOrdem;
         Quantidade qntNovaOrdem;
 

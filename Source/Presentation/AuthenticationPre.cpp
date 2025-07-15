@@ -44,7 +44,7 @@ PresentationInte* AuthenticationPre::showMainMenu() {
                 getDataMakeAccount();
                 request = ctrService->makeAccount(cpfMakeAccount, senhaMakeAccount, nomeMakeAccount);
             } catch (exception &e){
-                cout << "\n\n\n\n\n" << e.what() << "\n" << telaMain;
+                cout << "\n\n" << e.what() << "\n" << telaMain;
                 continue;
             }
             return request;
@@ -53,13 +53,13 @@ PresentationInte* AuthenticationPre::showMainMenu() {
                 getDataLogin();
                 request = ctrService->login(cpfLogin, senhaLogin);
             } catch (exception &e){
-                cout << "\n\n\n\n\n" << e.what() << "\n" << telaMain;
+                cout << "\n\n" << e.what() << "\n" << telaMain;
                 continue;
             }
             return request;
         } else if (resp == "3") {
             return exit();
-        } else cout << "\n\n\n\n\n" << "Entrada não reconhecida.\n" << telaMain;
+        } else cout << "\n\n" << "Entrada não reconhecida.\n" << telaMain;
     }
 };
 

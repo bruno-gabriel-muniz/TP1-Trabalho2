@@ -11,7 +11,7 @@ string InvestmentPre::telaEditCarteira = string(80, '-') + "\n" +
     " Mudar Nome: 1\n Mudar Perfil: 2\n Voltar: 3\n input -> ";
 
 string InvestmentPre::telaManageOrders1 = string(80, '-') + "\n" +
-    string(33, ' ') + "|Manage Orders|\n" + "\n";
+    string(33, ' ') + "|Manage Orders|\n\n";
 
 string InvestmentPre::telaManageOrders2 = 
     " Criar Ordem: 1\n Remover Ordem: 2\n Voltar: 3\n input -> ";
@@ -23,13 +23,13 @@ void InvestmentPre::showEditCarteira() {
         cin >> resp;
         if (resp == "1"){
             cout << "\n\n\tDigite o novo nome da carteira: ";
-            cin >> resp;
+            getline(cin >> ws, resp);
             try {
                 nomeCarteira->setValor(resp);
                 ctrService->editWallet(nomeCarteira, nullptr);
-                cout << "\n\n\n\n\n" << telaEditCarteira;
+                cout << "\n\n" << telaEditCarteira;
             } catch (exception &e) {
-                cout << "\n\n\n\n\n" << e.what() << "\n" << telaEditCarteira;
+                cout << "\n\n" << e.what() << "\n" << telaEditCarteira;
             }
         } else if (resp == "2"){
             cout << "\n\n\tDigite o novo perfil da carteira: ";
@@ -37,9 +37,9 @@ void InvestmentPre::showEditCarteira() {
             try {
                 perfilCarteira->setValor(resp);
                 ctrService->editWallet(nullptr, perfilCarteira);
-                cout << "\n\n\n\n\n" << telaEditCarteira;
+                cout << "\n\n" << telaEditCarteira;
             } catch (exception &e) {
-                cout << "\n\n\n\n\n" << e.what() << "\n" << telaEditCarteira;
+                cout << "\n\n" << e.what() << "\n" << telaEditCarteira;
             }
         } else if (resp == "3"){
             return;
@@ -61,7 +61,6 @@ string InvestmentPre::listOrders() {
     return out;
 }
 
-
 void InvestmentPre::showManageOrders() {
     string resp, telaManageOrders;
     telaManageOrders = telaManageOrders1 + listOrders() + telaManageOrders2;
@@ -69,9 +68,43 @@ void InvestmentPre::showManageOrders() {
     while(true){
         cin >> resp;
         if (resp == "1"){
-            
+            try{
+                //Coleta os dados da ordem
+                cout << "\n\n\tDigite o código da folha comprada: ";
+                getline(cin >> ws, resp);
+                codigoNovaOrdem.setValor(resp);
+
+                cout << "\n\n\tDigite a quantidade de ações compradas: ";
+                cin >> resp;
+                qntNovaOrdem.setValor(resp);
+
+                cout << "\n\n\tDigite a data da compra (AAAAMMDD): ";
+                cin >> resp;
+                dataNovaOrdem.setValor(resp);
+                
+                //Chama o serviço para criar a ordem
+                ctrService->makeOrder(codigoNovaOrdem, qntNovaOrdem, dataNovaOrdem);
+
+                telaManageOrders = telaManageOrders1 + listOrders() + telaManageOrders2;
+                cout << "\n\n" << telaManageOrders;
+            } catch (exception &e) {
+                cout << "\n\n" << e.what() << "\n" << telaManageOrders;
+            }
         } else if (resp == "2"){
-            
+            try{
+                //Coleta o código da ordem a ser removida
+                cout << "\n\n\tDigite o código da ordem a ser removida: ";
+                getline(cin >> ws, resp);
+                codigoRemoveOrdem.setValor(resp);
+
+                //Chama o serviço para remover a ordem
+                ctrService->removeOrder(codigoRemoveOrdem);
+
+                telaManageOrders = telaManageOrders1 + listOrders() + telaManageOrders2;
+                cout << "\n\n" << telaManageOrders;
+            } catch (exception &e) {
+                cout << "\n\n" << e.what() << "\n" << telaManageOrders;
+            }
         } else if (resp == "3"){
             return;
         } else {
@@ -92,10 +125,10 @@ PresentationInte* InvestmentPre::showMain(){
         cin >> resp;
         if (resp == "1") {
             showEditCarteira();
-            cout << "\n\n\n\n\n" << telaMain;
+            cout << "\n\n" << telaMain;
         } else if (resp == "2") {
             showManageOrders();
-            cout << "\n\n\n\n\n" << telaMain;
+            cout << "\n\n" << telaMain;
         } else if (resp == "3") {
             request = backInterface();
             break;

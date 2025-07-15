@@ -26,18 +26,18 @@ PresentationInte* AccountPre::run(){
         if (resp == "1"){
             request = showWallets();
             if (request) break;
-            cout << "\n\n\n\n\n" << telaMain;
+            cout << "\n\n" << telaMain;
         } else if (resp == "2"){
             request = showEditAccount();
             if(request) break;
-            cout << "\n\n\n\n\n" << telaMain;
+            cout << "\n\n" << telaMain;
         }  else if (resp == "3"){
             request = ctrService->logOut();
             break;
         } else if (resp == "4"){
             request = exit();
             break;
-        } else cout << "\n\n\n\n\n" << "Entrada não reconhecida.\n" << telaMain;
+        } else cout << "\n\n" << "Entrada não reconhecida.\n" << telaMain;
     }
     
     cout << "\n\n";
@@ -96,7 +96,7 @@ PresentationInte* AccountPre::showWallets(){
                 request = ctrService->manageWallet(nomeManageWallet);
                 break;
             } catch (exception &e){
-                cout << "\n\n\n\n\n" << e.what() << "\n" << telaRetorno;
+                cout << "\n\n" << e.what() << "\n" << telaRetorno;
                 continue;
             }
     
@@ -107,11 +107,11 @@ PresentationInte* AccountPre::showWallets(){
                 ctrService->removeWallet(nomeRemoveWallet);
                 telaRetorno = telaManageWallets1 + getWallets() + telaManageWallets2;
             } catch (exception &e){
-                cout << "\n\n\n\n\n" << e.what() << "\n" << telaRetorno;
+                cout << "\n\n" << e.what() << "\n" << telaRetorno;
                 continue;
             }
             telaRetorno = telaManageWallets1 + getWallets() + telaManageWallets2;
-            cout << "\n\n\n\n\n" << telaRetorno;
+            cout << "\n\n" << telaRetorno;
 
         // Tenta criar a carteira;
         } else if (resp == "3"){
@@ -119,17 +119,17 @@ PresentationInte* AccountPre::showWallets(){
                 getDataMakeWallet();
                 ctrService->makeWallet(nomeMakeWallet, perfilMakeWallet);
             } catch (exception &e){
-                cout << "\n\n\n\n\n" << e.what() << "\n" << telaRetorno;
+                cout << "\n\n" << e.what() << "\n" << telaRetorno;
                 continue;
             }
             telaRetorno = telaManageWallets1 + getWallets() + telaManageWallets2;
-            cout << "\n\n\n\n\n" << telaRetorno;
+            cout << "\n\n" << telaRetorno;
 
         // Volta para a tela anterior;
         } else if (resp == "4"){
             request = nullptr;
             break;
-        } else cout << "\n\n\n\n\n" << "Entrada não reconhecida.\n" << telaRetorno;
+        } else cout << "\n\n" << "Entrada não reconhecida.\n" << telaRetorno;
     }
     
     return request;
@@ -165,26 +165,26 @@ PresentationInte* AccountPre::showEditAccount(){
                 getDataName();
                 ctrService->changeName(nomeChangeUser);
             } catch (exception &e){
-                cout << "\n\n\n\n\n" << e.what() << "\n" << telaEdit;
+                cout << "\n\n" << e.what() << "\n" << telaEdit;
                 continue;
             }
-            cout << "\n\n\n\n\n" << telaEdit;
+            cout << "\n\n" << telaEdit;
         } else if (resp == "2"){
             try{
                 getDataSenha();
                 ctrService->changeSenha(senhaChangeUser);
             } catch (exception &e){
-                cout << "\n\n\n\n\n" << e.what() << "\n" << telaEdit;
+                cout << "\n\n" << e.what() << "\n" << telaEdit;
                 continue;
             }
-            cout << "\n\n\n\n\n" << telaEdit;
+            cout << "\n\n" << telaEdit;
         }  else if (resp == "3"){
             request = ctrService->removeAccount();
             break;
         } else if (resp == "4"){
             request = nullptr;
             break;
-        } else cout << "\n\n\n\n\n" << "Entrada não reconhecida.\n" << telaMain;
+        } else cout << "\n\n" << "Entrada não reconhecida.\n" << telaMain;
     }
     
     return request;
