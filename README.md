@@ -25,7 +25,7 @@ Este projeto é um aplicativo de terminal desenvolvido como parte da disciplina 
 
 ## 🧪 Estado Atual
 
-Atualmente, o projeto **não possui uma execução completa**, mas é possível usá-lo normalmente, exceto pela parte de gerenciamento de ordens. Além disso, é possível:
+Atualmente, o projeto **possui uma execução completa** e é possível usá-lo completamente. Porém, **existem melhorias** no sistema de gerenciamento de ordens e na exibição do saldo a **serem feitas**. Além disso, é possível:
 
 - Rodar os **testes unitários**
 - Executar funções de gerenciamento do banco de dados
