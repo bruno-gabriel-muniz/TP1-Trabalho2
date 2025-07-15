@@ -19,7 +19,7 @@ find_package(SQLite3 REQUIRED)
 # ========= Executável principal =========
 add_executable(main
     Source/main.cpp
-    Source/DB.cpp
+    Source/DB/DB.cpp
     Source/Libs/dominios.cpp
     Source/Presentation/AccountPre.cpp
     Source/Presentation/AuthenticationPre.cpp
@@ -33,7 +33,7 @@ target_link_libraries(main PRIVATE SQLite::SQLite3)
 
 # ========= updateData =========
 add_executable(updateData
-    Source/UpdateDadosHistoricos.cpp
+    Source/DB/UpdateDadosHistoricos.cpp
     Source/Libs/dominios.cpp
 )
 
@@ -46,7 +46,7 @@ add_executable(test_exec
     Source/Presentation/AuthenticationPre.cpp
     Source/Presentation/AccountPre.cpp
     Source/Presentation/InvestmentPre.cpp
-    Source/DB.cpp
+    Source/DB/DB.cpp
 )
 
 target_link_libraries(test_exec PRIVATE SQLite::SQLite3)
@@ -55,7 +55,7 @@ target_link_libraries(test_exec PRIVATE SQLite::SQLite3)
 add_executable(clearDbTest
     Source/Tests/ClearDbTest.cpp
     Source/Libs/dominios.cpp
-    Source/DB.cpp
+    Source/DB/DB.cpp
 )
 
 target_link_libraries(clearDbTest PRIVATE SQLite::SQLite3)
